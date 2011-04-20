@@ -1,15 +1,19 @@
 Stoat
 =====
 
-`Stoat`_ is a sleek, lightweight, pluggable CMS app for Django.
+`Stoat`_ is a sleek, lightweight, pluggable CMS app for Django, built to work with
+`Grappelli`_.
 
-.. _Stoat: http://stoat.rtfd.org/
-
-Stoat is like flatpages on steroids.  No, scratch that, Stoat isn't that bulky.  It's
+Stoat is like `flatpages`_ on steroids.  No, scratch that, Stoat isn't that bulky.  It's
 more like flatpages on a good exercise routine.
 
-If you want to know why you should use Stoat instead of one of the many other
-options, check out the :doc:`Why Stoat? </why>` page.
+If you want to know why you should use Stoat instead of one of the `many other
+options`_, check out the :doc:`Why Stoat? </why>` page.
+
+.. _Stoat: http://stoat.rtfd.org/
+.. _flatpages: http://docs.djangoproject.com/en/dev/ref/contrib/flatpages/
+.. _many other options: http://code.djangoproject.com/wiki/CMSAppsComparison
+.. _Grappelli: http://django-grappelli.readthedocs.org/en/latest/
 
 **At this moment Stoat is very much alpha software -- use it at your own risk!**
 

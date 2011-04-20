@@ -1,8 +1,10 @@
 Why Stoat?
 ==========
 
-Stoat was born at Dumbwaiter Design out of a desire for a simple CMS app that we
+Stoat was born at `Dumbwaiter Design`_ out of a desire for a simple CMS app that we
 could use for client sites.
+
+.. _Dumbwaiter Design: http://dwaiter.com/
 
 We wanted something with enough features that didn't take over the site and didn't
 break every time a new version of Django/Grappelli/Filebrowser was released.

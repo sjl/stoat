@@ -47,22 +47,27 @@ the form field type used (and validated) in the admin.
 char
 ````
 
-A basic Django CharField.
+A basic Django `CharField`_.
 
 image
 `````
 
-A FileBrowseField from django-filebrowser, with the ``'Image'`` type.
+A `FileBrowseField`_ from `django-filebrowser`_, with the ``'Image'`` type.
 
 int
 ```
 
-A basic Django IntegerField.
+A basic Django `IntegerField`_.
 
 text
 ````
 
-A basic Django TextField.
+A basic Django `CharField`_, but rendered as with a ``<textarea>`` widget.
+
+.. _CharField: http://docs.djangoproject.com/en/dev/ref/forms/fields/#charfield
+.. _FileBrowseField: http://readthedocs.org/docs/django-filebrowser/latest/fieldswidgets.html#filebrowsefield
+.. _IntegerField: http://docs.djangoproject.com/en/dev/ref/forms/fields/#integerfield
+.. _django-filebrowser: http://readthedocs.org/docs/django-filebrowser/latest/#filebrowsefield
 
 Further Usage
 -------------
