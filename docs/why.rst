@@ -7,14 +7,18 @@ could use for client sites.
 We wanted something with enough features that didn't take over the site and didn't
 break every time a new version of Django/Grappelli/Filebrowser was released.
 
-There are many other CMS apps for Django out there, and they are plump with nice,
+There are many other CMS apps for Django out there, and they are plump with many
 juicy features.
 
-bunny
+.. raw:: html
+
+   <a href="http://www.flickr.com/photos/kappawayfarer/101441548/" title="Piggy over the Stupid Bunny by Kappa Wayfarer, on Flickr"><img src="http://farm1.static.flickr.com/32/101441548_2ce47d8c92.jpg" width="500" height="375" alt="Piggy over the Stupid Bunny"></a>
 
 We wanted something sleeker.
 
-stoat
+.. raw:: html
+
+   <a href="http://www.flickr.com/photos/p1hun/2987019221/" title="Stoat by JanetHoward, on Flickr"><img src="http://farm4.static.flickr.com/3239/2987019221_4618fdd251.jpg" width="500" height="333" alt="Stoat"></a>
 
 What Stoat Has
 --------------
