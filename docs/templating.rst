@@ -45,3 +45,5 @@ Here's what ``pages/product.html`` might look like::
         {{ page.fields.description|linebreaks }}
     {% endblock %}
 
+You can use ``page.f`` as a shortcut for ``page.fields`` if you'd like to save on
+some typing.

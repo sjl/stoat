@@ -57,6 +57,9 @@ class Page(MP_Node):
 
         return self._fields
 
+    def f(self):
+        return self.fields()
+
 
     def get_absolute_url(self):
         return self.url

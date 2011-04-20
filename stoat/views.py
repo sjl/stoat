@@ -50,8 +50,6 @@ def move_page(request):
         page = Page.objects.get(id=page_id)
         page.save()
 
-
-
     # TODO: Make this dynamic.
     return HttpResponsePermanentRedirect('/admin/stoat/page/')
 
