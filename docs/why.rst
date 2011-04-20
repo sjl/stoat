@@ -28,7 +28,8 @@ What Stoat Has
 Here are the currently implemented features:
 
 * Arbitrary URLs.
-* Few dependencies.  At the moment treebeard the the only one.
+* Few dependencies.  At the moment `treebeard`_ the the only one, and installs
+  cleanly with pip.
 * Support for (read: doesn't break) the ``APPEND_SLASH`` setting.
 * Multiple templates for pages, with custom fields for each template.
 * Multiple field types, like Filebrowser Image fields.
@@ -36,6 +37,8 @@ Here are the currently implemented features:
 * South support for migrating the Stoat database between versions.
 * Built for and compatible with the latest version of Django (1.3), Grappelli and
   Filebrowser.
+
+.. _treebeard: https://tabo.pe/projects/django-treebeard/docs/1.61/
 
 What Stoat Doesn't Have Yet
 ---------------------------
