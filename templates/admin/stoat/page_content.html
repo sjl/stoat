@@ -1,0 +1,15 @@
+{% spaceless %}
+    <fieldset class="module">
+        <h2 class="collapse-handler">{{ field.label }}</h2>
+
+        <div class="row cells-1 {{ field.name }} {% if field.errors %}errors{% endif %}">
+            <div>
+                <div class="column span-4">{{ field.label_tag }}</div>
+                <div class="column span-flexible">
+                    {{ field }}
+                    {{ field.errors }}
+                </div>
+            </div>
+        </div>
+    </fieldset>
+{% endspaceless %}

@@ -1,0 +1,96 @@
+div.drag-handle {
+    padding: 4px 14px;
+    background-color: #ddd !important;
+    color: #555;
+    font-weight: normal;
+    font-size: 12px;
+    text-align: center;
+    position: absolute !important;
+    top: 10px;
+    right: 11px;
+    z-index: 50;
+    cursor: move;
+    border: 1px solid #b5b5b5;
+    width: 40px;
+
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+div.drop {
+    width: 300px;
+    position: absolute;
+    color: rgba(0, 0, 0, 0.0);
+    left: 0;
+    z-index: 10;
+    height: 15px;
+}
+div.drop.drop-active {
+    display: block;
+}
+div.drop.drop-hover {
+    color: rgba(0, 0, 0, 1.0);
+    display: block;
+}
+div.drop .child {
+    font: normal 24px sans-serif;
+    margin-top: 9px;
+}
+div.drop.drop-hover .child {
+    font: normal 24px sans-serif;
+    color: blue;
+}
+
+.drop .indent {
+    float: left;
+    margin-right: 10px;
+}
+.drop .border {
+    float: left;
+    width: 70px;
+}
+
+div.drop-above {
+    top: 0;
+}
+div.drop-below {
+    bottom: 0;
+}
+div.drop-inside {
+    top: 15px;
+}
+
+div.drop-above.drop-hover .border {
+    border-top: 3px solid blue;
+}
+div.drop-below.drop-hover .border {
+    border-bottom: 3px solid blue;
+}
+
+div.drop-above.first-child {
+    top: -14px;
+    height: 29px;
+}
+div.drop-above.first-child .indent, div.drop-above.first-child .border {
+    margin-top: 14px;
+}
+
+.changelist-results tbody tr th a, .changelist-results tbody tr td {
+    line-height: 24px;
+}
+.changelist-results tbody {
+    z-index: 1;
+}
+.changelist-results tbody tr th .stoat-row {
+    margin: -10px;
+    padding: 10px;
+    width: 400px;
+    position: relative !important;
+}
+.changelist-results tbody tr th a {
+    z-index: 20;
+    position: relative;
+}
+.changelist-results tbody tr th {
+    display: block !important;
+}
