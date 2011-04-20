@@ -1,7 +1,9 @@
 Stoat
 =====
 
-Stoat is a sleek, lightweight, pluggable CMS app for Django.
+`Stoat`_ is a sleek, lightweight, pluggable CMS app for Django.
+
+.. _Stoat: http://stoat.rtfd.org/
 
 Stoat is like flatpages on steroids.  No, scratch that, Stoat isn't that bulky.  It's
 more like flatpages on a good exercise routine.
@@ -18,7 +20,7 @@ Installing Stoat is just like installing any other Django app.
 
 First, install the library (preferably into a virtualenv)::
 
-    pip install -e https://bitbucket.org/sjl/stoat
+    pip install -e hg+https://bitbucket.org/sjl/stoat#egg=stoat
 
 Add ``stoat`` to your ``INSTALLED_APPS`` setting::
 
@@ -35,8 +37,17 @@ Finally, add the following line at the end of your ``MIDDLEWARE_CLASSES`` settin
         'stoat.middleware.StoatMiddleware',
     )
 
-Usage
------
+If you've customized your admin dashboard with Grappelli's dashboard tools, you'll
+need to add Stoat to the dashboard to be able to add pages and such::
+
+        self.children.append(modules.ModelList(
+            'Stoat',
+            ('stoat.*',),
+            column=1,
+            css_classes=['collapse', 'open'],
+        ))
+
+Take a look at :doc:`Usage </usage>` to learn how to use Stoat.
 
 Contents
 --------
