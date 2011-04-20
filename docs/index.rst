@@ -49,8 +49,8 @@ need to add Stoat to the dashboard to be able to add pages and such::
 
 Take a look at :doc:`Usage </usage>` to learn how to use Stoat.
 
-Contents
---------
+Full Documentation
+------------------
 
 .. toctree::
    :maxdepth: 2
