@@ -64,3 +64,10 @@ text
 
 A basic Django TextField.
 
+Further Usage
+-------------
+
+Next you'll want to check out the :doc:`Admin </admin>` documentation to learn how to
+use the admin interface for adding pages (it's simple), and the :doc:`Templating
+</templating>` documentation to learn how to create Django templates for use with
+Stoat.

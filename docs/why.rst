@@ -26,6 +26,7 @@ What Stoat Has
 Here are the currently implemented features:
 
 * Arbitrary URLs.
+* Few dependencies.  At the moment treebeard the the only one.
 * Support for (read: doesn't break) the ``APPEND_SLASH`` setting.
 * Multiple templates for pages, with custom fields for each template.
 * Multiple field types, like Filebrowser Image fields.
