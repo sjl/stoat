@@ -5,7 +5,7 @@ Installing Stoat is just like installing any other Django app.
 
 First, install the library (preferably into a virtualenv)::
 
-    pip install -e hg+https://bitbucket.org/sjl/stoat@v0.1.0#egg=stoat
+    pip install -e hg+https://bitbucket.org/sjl/stoat@v0.1.1#egg=stoat
 
 Add ``stoat`` to your ``INSTALLED_APPS`` setting::
 
