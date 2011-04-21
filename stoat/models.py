@@ -34,7 +34,7 @@ class Page(MP_Node):
         return u'%s' % self.title
 
     def full_url(self):
-        url = '/' + '/'.join(p.slug for p in list(self.get_ancestors()) + [self])
+        url = '/' + '/'.join(p.slug for p in list(self.get_ancestors()) + [self] if p.slug)
 
         # Make sure the URL ends with a slash, as god intended.
         # This little endswith dance is done to handle the root url ('/') correctly.
