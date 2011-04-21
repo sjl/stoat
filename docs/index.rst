@@ -19,7 +19,7 @@ Report issues on the GitHub `issue tracker`_.
 
 .. _Stoat: http://stoat.rtfd.org/
 .. _flatpages: http://docs.djangoproject.com/en/dev/ref/contrib/flatpages/
-.. _many other options: http://code.djangoproject.com/wiki/CMSAppsComparison
+.. _many other options: http://djangopackages.com/grids/g/cms/
 .. _Grappelli: http://django-grappelli.readthedocs.org/en/latest/
 .. _on BitBucket: http://bitbucket.org/sjl/stoat/
 .. _on GitHub: http://github.org/sjl/stoat/

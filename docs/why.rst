@@ -69,4 +69,4 @@ Here are the things we don't want to have in Stoat:
 If you need some or all of these you then Stoat simply isn't for you.  You should
 look at one of the `many other Django CMS apps`_ around.
 
-.. _many other Django CMS apps: http://code.djangoproject.com/wiki/CMSAppsComparison
+.. _many other Django CMS apps: http://djangopackages.com/grids/g/cms/
