@@ -7,14 +7,28 @@ required, and a few more available if you need them.
 Required Settings
 -----------------
 
+These two settings need to be set for Stoat to work correctly.
+
 STOAT_TEMPLATES
 ```````````````
+
+This setting defines the templates available for use, as described in the
+:doc:`Templating Documentation </templating>`.
 
 STOAT_DEFAULT_TEMPLATE
 ``````````````````````
 
+This setting defines the default template, as described in the :doc:`Templating
+Documentation </templating>`.
+
 Optional Settings
 -----------------
 
+These settings are completely optional.
+
 STOAT_DEBUG
 ```````````
+
+Set this to ``True`` if you're working on Stoat itself.  It does the following:
+
+* Show ``PageContents`` in the admin interface.
