@@ -5,6 +5,10 @@ from treebeard.mp_tree import MP_Node
 
 import stemplates
 
+ALLOWED_CHARS = 'abcdefghijklmnopqrstuvwxyz1234567890_'
+def clean_field_title(title):
+    return ''.join((c if c in ALLOWED_CHARS else '_') for c in title.lower())
+
 
 CONTENT_TYPES = (
     ('char', 'char'),
@@ -52,7 +56,7 @@ class Page(MP_Node):
 
     def fields(self):
         if not hasattr(self, '_fields'):
-            self._fields = dict((pc.title.lower(), pc.content)
+            self._fields = dict((clean_field_title(pc.title), pc.content)
                                 for pc in self.pagecontent_set.all())
 
         return self._fields
@@ -68,6 +72,7 @@ class Page(MP_Node):
 class PageContent(models.Model):
     page = models.ForeignKey(Page)
     title = models.CharField(max_length=40)
+    cleaned_title = models.CharField(max_length=40, editable=False)
     typ = models.CharField(max_length=4, choices=CONTENT_TYPES, verbose_name='type')
     content = models.TextField(blank=True)
 
@@ -77,6 +82,10 @@ class PageContent(models.Model):
 
     def __unicode__(self):
         return u'%s (%s)' % (self.title, self.typ)
+
+    def save(self, *args, **kwargs):
+        self.cleaned_title = clean_field_title(self.title)
+        return super(PageContent, self).save(*args, **kwargs)
 
 def clean_content(sender, instance, **kwargs):
     page = instance

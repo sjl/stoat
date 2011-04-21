@@ -14,20 +14,22 @@ The first is ``page.title``, which is the title of the page as defined in the ad
 interface.
 
 The next is ``page.fields``.  This contains all of the fields you've defined in
-``STOAT_TEMPLATES``, with their names lowercased.
+``STOAT_TEMPLATES``, with their names lowercased and every non-letter/number replaced
+by an underscore.
 
 For example: look at the following ``STOAT_TEMPLATES`` setting::
 
     STOAT_TEMPLATES = {
         'Default': ['default.html', [
-            ['Heading', 'char'],
-            ['Body',    'text'],
-            ['Sidebar', 'text'],
+            ['Heading',         'char'],
+            ['Body',            'text'],
+            ['Sidebar Heading', 'text'],
         ]],
         'Product': ['pages/product.html', [
             ['Price',       'int'],
             ['Description', 'text'],
             ['Image',       'image'],
+            ['Image 2',     'image'],
         ]],
     }
 
@@ -39,6 +41,7 @@ Here's what ``pages/product.html`` might look like::
         <h1>{{ page.title }}</h1>
 
         <img class="product-image" src="{{ page.fields.image }}" />
+        <img class="product-image" src="{{ page.fields.image_2 }}" />
 
         <p class="price">Price: ${{ page.fields.price }}</p>
 

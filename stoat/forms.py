@@ -1,6 +1,7 @@
 from django import forms
 from models import Page
 from stemplates import get_fields
+from models import clean_field_title
 
 
 class PageContentForm(forms.Form):
@@ -19,13 +20,15 @@ def get_content_form(tname, data=None, initial=None):
 
     for title, typ in fs:
         if typ.lower() == 'char':
-            f = forms.CharField(max_length=140, label=title)
+            f = forms.CharField(max_length=140, label=title, required=False)
         elif typ.lower() == 'text':
-            f = forms.CharField(widget=forms.Textarea(), label=title)
+            f = forms.CharField(widget=forms.Textarea(), label=title, required=False)
         elif typ.lower() == 'int':
-            f = forms.IntegerField(label=title)
+            f = forms.IntegerField(label=title, required=False)
+        elif typ.lower() == 'url':
+            f = forms.URLField(label=title, required=False, verify_exists=False)
 
-        form.fields['content_' + title.lower()] = f
+        form.fields['content_' + clean_field_title(title)] = f
 
     return form
 

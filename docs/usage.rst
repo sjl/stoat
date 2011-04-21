@@ -64,7 +64,13 @@ text
 
 A basic Django `CharField`_, but rendered as with a ``<textarea>`` widget.
 
+url
+```
+
+A basic Django `URLField`_ (with ``verify_exists`` set to ``False``).
+
 .. _CharField: http://docs.djangoproject.com/en/dev/ref/forms/fields/#charfield
+.. _URLField: http://docs.djangoproject.com/en/dev/ref/forms/fields/#urlfield
 .. _FileBrowseField: http://readthedocs.org/docs/django-filebrowser/latest/fieldswidgets.html#filebrowsefield
 .. _IntegerField: http://docs.djangoproject.com/en/dev/ref/forms/fields/#integerfield
 .. _django-filebrowser: http://readthedocs.org/docs/django-filebrowser/latest/#filebrowsefield

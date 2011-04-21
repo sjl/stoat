@@ -1,5 +1,5 @@
 from django.contrib import admin
-from models import Page, PageContent
+from models import Page, PageContent, clean_field_title
 from django.shortcuts import get_object_or_404
 from django.contrib.admin.views.main import ChangeList
 from views import move_page
@@ -66,7 +66,7 @@ class PageAdmin(admin.ModelAdmin):
         else:
             initial = {}
             for pc in page.pagecontent_set.all():
-                initial['content_' + pc.title.lower()] = pc.content
+                initial['content_' + clean_field_title(pc.title)] = pc.content
 
             content_form = stoat_forms.get_content_form(page.template, initial=initial)
 
@@ -82,12 +82,12 @@ class PageAdmin(admin.ModelAdmin):
         obj.save()
 
         if not form.ignore_content:
-            content_data = [(k.split('_')[1], v)
+            content_data = [(k.split('_', 1)[1], v)
                             for k, v in form.data.items()
                             if k.startswith('content_')]
 
             for title, content in content_data:
-                pc = PageContent.objects.get(page=obj, title__iexact=title)
+                pc = PageContent.objects.get(page=obj, cleaned_title=title)
                 pc.content = content
                 pc.save()
 
