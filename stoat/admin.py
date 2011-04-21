@@ -4,6 +4,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.admin.views.main import ChangeList
 from views import move_page
 import forms as stoat_forms
+from django.conf import settings
 
 def check_empty_dict(GET_dict):
     empty = True
@@ -140,4 +141,6 @@ class PageContentAdmin(admin.ModelAdmin):
     list_display = ('title', 'typ', 'page', 'content')
     list_filter = ('page', 'typ')
 
-admin.site.register(PageContent, PageContentAdmin)
+if getattr(settings, 'STOAT_DEBUG', False):
+    admin.site.register(PageContent, PageContentAdmin)
+
