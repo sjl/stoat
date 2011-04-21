@@ -31,4 +31,4 @@ STOAT_DEBUG
 
 Set this to ``True`` if you're working on Stoat itself.  It does the following:
 
-* Show ``PageContents`` in the admin interface.
+* Show the ``PageContent`` model in the admin interface.
