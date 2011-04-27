@@ -1,6 +1,6 @@
 from setuptools import setup
 
-install_requires = ['django-treebeard']
+install_requires = ['django-treebeard', 'django-templatetag-sugar']
 
 description = 'A sleek, lightweight, pluggable CMS app for Django.'
 long_description = description
