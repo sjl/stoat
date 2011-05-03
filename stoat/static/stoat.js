@@ -49,15 +49,12 @@ grappelli.initTableElements = function() {;};
                 var descendants = $(el).closest('tr').find('.descendants').text().split(',');
 
                 if (drop_id === drag_id) {
-                    console.log('false');
                     return false;
                 }
                 if ($.inArray(drop_id, descendants) !== -1) {
-                    console.log('false');
                     return false;
                 }
 
-                console.log('true');
                 return true;
             },
             greedy: true,

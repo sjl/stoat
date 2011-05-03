@@ -72,7 +72,7 @@ class PageAdmin(admin.ModelAdmin):
 
         extra_context.update({
             'content_form': content_form,
-            'media': content_form.media,
+            'media': content_form.media + self.media,
             'parent': parent,
         })
 
