@@ -27,6 +27,9 @@ def get_content_form(tname, data=None, initial=None):
             f = forms.IntegerField(label=title, required=False)
         elif typ.lower() == 'url':
             f = forms.URLField(label=title, required=False, verify_exists=False)
+        elif typ.lower() == 'ckeditor':
+            from ckeditor.widgets import CKEditor
+            f = forms.CharField(widget=CKEditor, label=title, required=False)
 
         form.fields['content_' + clean_field_title(title)] = f
 

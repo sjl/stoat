@@ -13,7 +13,7 @@ def clean_field_title(title):
 CONTENT_TYPES = (
     ('char', 'char'),
     ('text', 'text'),
-    ('html', 'html'),
+    ('ckeditor', 'ckeditor'),
     ('img', 'img'),
     ('int', 'int'),)
 TEMPLATES = [(name, name) for name in settings.STOAT_TEMPLATES.keys()]
@@ -73,7 +73,7 @@ class PageContent(models.Model):
     page = models.ForeignKey(Page)
     title = models.CharField(max_length=40)
     cleaned_title = models.CharField(max_length=40, editable=False)
-    typ = models.CharField(max_length=4, choices=CONTENT_TYPES, verbose_name='type')
+    typ = models.CharField(max_length=12, choices=CONTENT_TYPES, verbose_name='type')
     content = models.TextField(blank=True)
 
     class Meta:
