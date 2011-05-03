@@ -1,4 +1,5 @@
 from django import forms
+from django.conf import settings
 from models import Page
 from stemplates import get_fields
 from models import clean_field_title
@@ -29,7 +30,16 @@ def get_content_form(tname, data=None, initial=None):
             f = forms.URLField(label=title, required=False, verify_exists=False)
         elif typ.lower() == 'ckeditor':
             from ckeditor.widgets import CKEditor
-            f = forms.CharField(widget=CKEditor, label=title, required=False)
+            config = getattr(settings, 'STOAT_CKEDITOR_CONFIG', 'default')
+            f = forms.CharField(widget=CKEditor(ckeditor_config=config), label=title, required=False)
+        elif typ.lower() == 'email':
+            f = forms.EmailField(label=title, required=False)
+        elif typ.lower() == 'bool':
+            f = forms.BooleanField(label=title, required=False)
+        elif typ.lower() == 'float':
+            f = forms.FloatField(label=title, required=False)
+        elif typ.lower() == 'decimal':
+            f = forms.DecimalField(label=title, required=False)
 
         form.fields['content_' + clean_field_title(title)] = f
 

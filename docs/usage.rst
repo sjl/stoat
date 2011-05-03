@@ -44,6 +44,11 @@ The following types of fields are available for use.
 Note: Stoat actually stores all field data as Text data.  The field types only change
 the form field type used (and validated) in the admin.
 
+bool
+````
+
+A basic Django `BooleanField`_.
+
 char
 ````
 
@@ -53,6 +58,21 @@ ckeditor
 ````
 
 A `CKEditor`_ field.  This requires that `django-ckeditor`_ be installed.
+
+decimal
+```````
+
+A basic Django `DecimalField`_.
+
+email
+`````
+
+A basic Django `EmailField`_.
+
+float
+`````
+
+A basic Django `FloatField`_.
 
 image
 `````
@@ -74,8 +94,12 @@ url
 
 A basic Django `URLField`_ (with ``verify_exists`` set to ``False``).
 
+.. _BooleanField: http://docs.djangoproject.com/en/dev/ref/forms/fields/#booleanfield
 .. _CharField: http://docs.djangoproject.com/en/dev/ref/forms/fields/#charfield
+.. _FloatField: http://docs.djangoproject.com/en/dev/ref/forms/fields/#floatfield
+.. _DecimalField: http://docs.djangoproject.com/en/dev/ref/forms/fields/#decimalfield
 .. _URLField: http://docs.djangoproject.com/en/dev/ref/forms/fields/#urlfield
+.. _EmailField: http://docs.djangoproject.com/en/dev/ref/forms/fields/#emailfield
 .. _FileBrowseField: http://readthedocs.org/docs/django-filebrowser/latest/fieldswidgets.html#filebrowsefield
 .. _IntegerField: http://docs.djangoproject.com/en/dev/ref/forms/fields/#integerfield
 .. _django-filebrowser: http://readthedocs.org/docs/django-filebrowser/latest/#filebrowsefield

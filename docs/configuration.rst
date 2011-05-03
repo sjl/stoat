@@ -26,6 +26,51 @@ Optional Settings
 
 These settings are completely optional.
 
+STOAT_CKEDITOR_CONFIG
+`````````````````````
+
+This setting defines which of the the ``CKEDITOR_CONFIGS`` `django-ckeditor`_ should
+use.  For example::
+
+    CKEDITOR_CONFIGS = {
+        'default': {
+            'toolbar': [
+                [      'Undo', 'Redo',
+                  '-', 'Bold', 'Italic', 'Underline',
+                  '-', 'Link', 'Unlink', 'Anchor',
+                  '-', 'Format',
+                  '-', 'SpellChecker', 'Scayt',
+                  '-', 'Maximize',
+                  '-', 'HorizontalRule',
+                  '-', 'Table',
+                  '-', 'BulletedList', 'NumberedList',
+                  '-', 'Cut','Copy','Paste','PasteText','PasteFromWord',
+                  '-', 'Image',
+                  '-', 'Source',
+                  '-', 'About',
+                ]
+            ],
+            'width': 840,
+            'height': 300,
+            'toolbarCanCollapse': False,
+        },
+        'simple': {
+            'toolbar': [
+                [      'Undo', 'Redo',
+                  '-', 'Link', 'Unlink', 'Anchor',
+                  '-', 'Source',
+                  '-', 'About',
+                ]
+            ],
+            'width': 600,
+            'height': 150,
+            'toolbarCanCollapse': False,
+        }
+    }
+    STOAT_CKEDITOR_CONFIG = 'simple'
+
+.. _django-ckeditor: http://github.com/dwaiter/django-ckeditor
+
 STOAT_DEBUG
 ```````````
 
