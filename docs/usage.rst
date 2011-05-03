@@ -49,6 +49,11 @@ char
 
 A basic Django `CharField`_.
 
+ckeditor
+````
+
+A `CKEditor`_ field.  This requires that `django-ckeditor`_ be installed.
+
 image
 `````
 
@@ -74,6 +79,8 @@ A basic Django `URLField`_ (with ``verify_exists`` set to ``False``).
 .. _FileBrowseField: http://readthedocs.org/docs/django-filebrowser/latest/fieldswidgets.html#filebrowsefield
 .. _IntegerField: http://docs.djangoproject.com/en/dev/ref/forms/fields/#integerfield
 .. _django-filebrowser: http://readthedocs.org/docs/django-filebrowser/latest/#filebrowsefield
+.. _ckeditor: http://ckeditor.com/
+.. _django-ckeditor: http://github.com/dwaiter/django-ckeditor
 
 Further Usage
 -------------
