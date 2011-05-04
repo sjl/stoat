@@ -16,7 +16,7 @@ variable has a few properties you'll want to use.
 The title of the page as defined in the admin interface.
 
 ``page.get_absolute_url``
-~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 A normal Django ``get_absolute_url`` method that will return the page's URL.
 

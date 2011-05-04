@@ -55,7 +55,7 @@ char
 A basic Django `CharField`_.
 
 ckeditor
-~~~~
+~~~~~~~~
 
 A `CKEditor`_ field.  This requires that `django-ckeditor`_ be installed.
 
