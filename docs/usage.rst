@@ -45,52 +45,52 @@ Note: Stoat actually stores all field data as Text data.  The field types only c
 the form field type used (and validated) in the admin.
 
 bool
-````
+~~~~
 
 A basic Django `BooleanField`_.
 
 char
-````
+~~~~
 
 A basic Django `CharField`_.
 
 ckeditor
-````
+~~~~
 
 A `CKEditor`_ field.  This requires that `django-ckeditor`_ be installed.
 
 decimal
-```````
+~~~~~~~
 
 A basic Django `DecimalField`_.
 
 email
-`````
+~~~~~
 
 A basic Django `EmailField`_.
 
 float
-`````
+~~~~~
 
 A basic Django `FloatField`_.
 
 image
-`````
+~~~~~
 
 A `FileBrowseField`_ from `django-filebrowser`_, with the ``'Image'`` type.
 
 int
-```
+~~~
 
 A basic Django `IntegerField`_.
 
 text
-````
+~~~~
 
 A basic Django `CharField`_, but rendered as with a ``<textarea>`` widget.
 
 url
-```
+~~~
 
 A basic Django `URLField`_ (with ``verify_exists`` set to ``False``).
 

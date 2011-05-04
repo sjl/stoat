@@ -73,6 +73,21 @@ class Page(MP_Node):
         return list(self.get_ancestors()) + [self]
 
 
+    def nav_siblings(self):
+        return list(self.get_siblings())
+
+    def nav_children(self):
+        return list(self.get_children())
+
+    def nav_siblings_and_children(self):
+        siblings = self.nav_siblings()
+        results = []
+        for sibling in siblings:
+            results.append([sibling, sibling.get_children()])
+
+        return results
+
+
 class PageContent(models.Model):
     page = models.ForeignKey(Page)
     title = models.CharField(max_length=40)

@@ -11,20 +11,23 @@ When Stoat renders a template it adds a ``page`` variable to the context.  This
 variable has a few properties you'll want to use.
 
 ``page.title``
-``````````````
+~~~~~~~~~~~~~~
 
-``page.title`` contains the title of the page as defined in the admin interface.
+The title of the page as defined in the admin interface.
 
 ``page.get_absolute_url``
-``````````````
+~~~~~~~~~~~~~~
 
-``page.get_absolute_url`` is a normal Django ``get_absolute_url`` method.
+A normal Django ``get_absolute_url`` method that will return the page's URL.
+
+Page Fields
+-----------
 
 ``page.fields``
-```````````````
+~~~~~~~~~~~~~~~
 
-``page.fields`` contains all of the fields you've defined in ``STOAT_TEMPLATES``,
-with their names lowercased and every non-letter/number replaced by an underscore.
+This property contains all of the fields you've defined in ``STOAT_TEMPLATES``, with
+their names lowercased and every non-letter/number replaced by an underscore.
 
 For example: look at the following ``STOAT_TEMPLATES`` setting::
 
@@ -60,11 +63,16 @@ Here's what ``pages/product.html`` might look like::
 You can use ``page.f`` as a shortcut for ``page.fields`` if you'd like to save on
 some typing.
 
-``page.breadcrumbs``
-````````````````````
+Navigation
+----------
 
-``page.breadcrumbs`` is a list of the page's ancestors and itself.  For example,
-imagine you have the following page layout::
+Each page also has some properties to help you build navigation in your templates.
+
+``page.breadcrumbs``
+~~~~~~~~~~~~~~~~~~~~
+
+A list of the page's ancestors and itself.  For example, imagine you have the
+following page layout::
 
     About Us
     |
@@ -92,3 +100,64 @@ Here's an example of creating a simple list of breadcrumbs in an HTML template::
         {% endfor %}
     </ul>
 
+``page.nav_siblings``
+~~~~~~~~~~~~~~~~~~~~~
+
+A list of the page's siblings, including itself.
+
+``page.nav_children``
+~~~~~~~~~~~~~~~~~~~~~
+
+A list of the page's children.
+
+``page.nav_siblings_and_children``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A nested list of the page's siblings (including itself) and their children. For
+example, imagine the following layout::
+
+    Products
+    |
+    +-> Guitars
+    |
+    +-> Drums
+
+    About Us
+    |
+    +-> Hours
+    |
+    +-> Return Policy
+
+For the "Products" or "About Us" page ``page.nav_siblings_and_children`` will be::
+
+    [
+        [<Products>, [
+            <Guitars>,
+            <Drums>,
+        ]],
+        [<About Us>, [
+            <Hours>,
+            <Return Policy>,
+        ]],
+    ]
+
+This property can be useful if you're trying to build a two-level navigation list
+(possibly with Javascript dropdowns).  Here's an example of building such a list::
+
+    <ul>
+        {% for top_page, child_pages in page.nav_siblings_and_children %}
+            <li>
+                <a href="{{ top_page.get_absolute_url }}">{{ top_page.title }}</a>
+
+                {% if child_pages %}
+                    <ul>
+                        {% for child_page in child_pages %}
+                            <li>
+                                <a href="{{ child_page.get_absolute_url }}">{{ child_page.title }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
