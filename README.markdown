@@ -1,4 +1,4 @@
 Stoat
 =====
 
-Check out the site: <http://stoat.rtfd.org/>
+Check out the documentation: <http://stoat.rtfd.org/>
