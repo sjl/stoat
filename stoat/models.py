@@ -69,6 +69,10 @@ class Page(MP_Node):
         return self.url
 
 
+    def breadcrumbs(self):
+        return list(self.get_ancestors()) + [self]
+
+
 class PageContent(models.Model):
     page = models.ForeignKey(Page)
     title = models.CharField(max_length=40)
