@@ -8,6 +8,47 @@ from models import clean_field_title
 class PageContentForm(forms.Form):
     pass
 
+def _get_field(typ, title):
+    typ = typ.lower()
+    if typ == 'char':
+        return forms.CharField(max_length=140, label=title, required=False)
+
+    if typ == 'text':
+        return forms.CharField(widget=forms.Textarea(), label=title, required=False)
+
+    if typ == 'int':
+        return forms.IntegerField(label=title, required=False)
+
+    if typ == 'url':
+        return forms.URLField(label=title, required=False, verify_exists=False)
+
+    if typ == 'ckeditor':
+        from ckeditor.widgets import CKEditor
+        config = getattr(settings, 'STOAT_CKEDITOR_CONFIG', 'default')
+        return forms.CharField(widget=CKEditor(ckeditor_config=config), label=title, required=False)
+
+    if typ == 'email':
+        return forms.EmailField(label=title, required=False)
+
+    if typ == 'bool':
+        return forms.BooleanField(label=title, required=False)
+
+    if typ == 'float':
+        return forms.FloatField(label=title, required=False)
+
+    if typ == 'decimal':
+        return forms.DecimalField(label=title, required=False)
+
+    if typ == 'img':
+        from filebrowser.fields import FileBrowseFormField, FileBrowseWidget
+
+        attrs = { 'directory': '', 'extensions': '', 'format': 'Image', }
+
+        return FileBrowseFormField(format='Image', label=title, required=False,
+                                   widget=FileBrowseWidget(attrs=attrs))
+
+    assert False, "Unknown field type '%s' for field '%s'" % (typ, title)
+
 def get_content_form(tname, data=None, initial=None):
     fs = get_fields(tname)
 
@@ -20,27 +61,7 @@ def get_content_form(tname, data=None, initial=None):
         form = PageContentForm()
 
     for title, typ in fs:
-        if typ.lower() == 'char':
-            f = forms.CharField(max_length=140, label=title, required=False)
-        elif typ.lower() == 'text':
-            f = forms.CharField(widget=forms.Textarea(), label=title, required=False)
-        elif typ.lower() == 'int':
-            f = forms.IntegerField(label=title, required=False)
-        elif typ.lower() == 'url':
-            f = forms.URLField(label=title, required=False, verify_exists=False)
-        elif typ.lower() == 'ckeditor':
-            from ckeditor.widgets import CKEditor
-            config = getattr(settings, 'STOAT_CKEDITOR_CONFIG', 'default')
-            f = forms.CharField(widget=CKEditor(ckeditor_config=config), label=title, required=False)
-        elif typ.lower() == 'email':
-            f = forms.EmailField(label=title, required=False)
-        elif typ.lower() == 'bool':
-            f = forms.BooleanField(label=title, required=False)
-        elif typ.lower() == 'float':
-            f = forms.FloatField(label=title, required=False)
-        elif typ.lower() == 'decimal':
-            f = forms.DecimalField(label=title, required=False)
-
+        f = _get_field(typ, title)
         form.fields['content_' + clean_field_title(title)] = f
 
     return form

@@ -18,7 +18,7 @@ example to get you started::
         'Product': ['pages/product.html', [
             ['Price',       'int'],
             ['Description', 'text'],
-            ['Image',       'image'],
+            ['Image',       'img'],
         ]],
     }
     STOAT_DEFAULT_TEMPLATE = 'Default'
@@ -74,8 +74,8 @@ float
 
 A basic Django `FloatField`_.
 
-image
-~~~~~
+img
+~~~
 
 A `FileBrowseField`_ from `django-filebrowser`_, with the ``'Image'`` type.
 

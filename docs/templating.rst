@@ -40,8 +40,8 @@ For example: look at the following ``STOAT_TEMPLATES`` setting::
         'Product': ['pages/product.html', [
             ['Price',       'int'],
             ['Description', 'text'],
-            ['Image',       'image'],
-            ['Image 2',     'image'],
+            ['Image',       'img'],
+            ['Image 2',     'img'],
         ]],
     }
 
