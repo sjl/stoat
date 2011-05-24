@@ -94,6 +94,7 @@ class PageContent(models.Model):
     cleaned_title = models.CharField(max_length=40, editable=False)
     typ = models.CharField(max_length=12, choices=CONTENT_TYPES, verbose_name='type')
     content = models.TextField(blank=True)
+    extra = models.CharField(max_length=42, blank=True)
 
     class Meta:
         unique_together = (('title', 'page'),)

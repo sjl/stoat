@@ -1,5 +1,4 @@
 from django import forms
-from django.conf import settings
 from models import Page
 from stemplates import get_fields
 from models import clean_field_title
@@ -8,44 +7,51 @@ from models import clean_field_title
 class PageContentForm(forms.Form):
     pass
 
-def _get_field(typ, title):
+def _get_field(typ, title, options):
     typ = typ.lower()
+    required = options.get('required', False)
+
     if typ == 'char':
-        return forms.CharField(max_length=140, label=title, required=False)
+        return forms.CharField(max_length=140, label=title, required=required)
 
     if typ == 'text':
-        return forms.CharField(widget=forms.Textarea(), label=title, required=False)
+        return forms.CharField(widget=forms.Textarea(), label=title, required=required)
 
     if typ == 'int':
-        return forms.IntegerField(label=title, required=False)
+        return forms.IntegerField(label=title, required=required)
 
     if typ == 'url':
-        return forms.URLField(label=title, required=False, verify_exists=False)
+        return forms.URLField(label=title, required=required, verify_exists=False)
 
     if typ == 'ckeditor':
         from ckeditor.widgets import CKEditor
-        config = getattr(settings, 'STOAT_CKEDITOR_CONFIG', 'default')
-        return forms.CharField(widget=CKEditor(ckeditor_config=config), label=title, required=False)
+
+        config = options.get('config', 'default')
+        return forms.CharField(widget=CKEditor(ckeditor_config=config),
+                               label=title, required=required)
 
     if typ == 'email':
-        return forms.EmailField(label=title, required=False)
+        return forms.EmailField(label=title, required=required)
 
     if typ == 'bool':
-        return forms.BooleanField(label=title, required=False)
+        return forms.BooleanField(label=title, required=required)
 
     if typ == 'float':
-        return forms.FloatField(label=title, required=False)
+        return forms.FloatField(label=title, required=required)
 
     if typ == 'decimal':
-        return forms.DecimalField(label=title, required=False)
+        return forms.DecimalField(label=title, required=required)
 
     if typ == 'img':
         from filebrowser.fields import FileBrowseFormField, FileBrowseWidget
 
         attrs = { 'directory': '', 'extensions': '', 'format': 'Image', }
 
-        return FileBrowseFormField(format='Image', label=title, required=False,
+        return FileBrowseFormField(format='Image', label=title, required=required,
                                    widget=FileBrowseWidget(attrs=attrs))
+
+    if typ == 'fk':
+        return forms.ModelChoiceField(Page.objects.all(), label=title, required=required)
 
     assert False, "Unknown field type '%s' for field '%s'" % (typ, title)
 
@@ -60,8 +66,8 @@ def get_content_form(tname, data=None, initial=None):
     else:
         form = PageContentForm()
 
-    for title, typ in fs:
-        f = _get_field(typ, title)
+    for title, typ, options in fs:
+        f = _get_field(typ, title, options)
         form.fields['content_' + clean_field_title(title)] = f
 
     return form
