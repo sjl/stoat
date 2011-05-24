@@ -7,7 +7,7 @@ long_description = description
 
 setup(
     name='stoat',
-    version='0.2.2',
+    version='0.3.0',
     install_requires=install_requires,
     description=description,
     long_description=long_description,
