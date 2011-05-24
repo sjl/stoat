@@ -1,8 +1,10 @@
+{% load look %}
+
 {% spaceless %}
     <fieldset class="module">
         <h2 class="collapse-handler">
             {{ field.label }}
-            {% if field.required %}(required){% endif %}
+            {% if field.field.required %}(required){% endif %}
         </h2>
 
         <div class="row cells-1 {{ field.name }} {% if field.errors %}errors{% endif %}">
