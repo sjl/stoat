@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django.db.models.signals import post_save
+from django.db.models.loading import get_model
 from treebeard.mp_tree import MP_Node
 
 import stemplates
@@ -15,6 +16,7 @@ CONTENT_TYPES = (
     ('text', 'text'),
     ('ckeditor', 'ckeditor'),
     ('img', 'img'),
+    ('fk', 'fk'),
     ('int', 'int'),)
 TEMPLATES = [(name, name) for name in settings.STOAT_TEMPLATES.keys()]
 
@@ -56,7 +58,7 @@ class Page(MP_Node):
 
     def fields(self):
         if not hasattr(self, '_fields'):
-            self._fields = dict((clean_field_title(pc.title), pc.content)
+            self._fields = dict((clean_field_title(pc.title), pc.get_content())
                                 for pc in self.pagecontent_set.all())
 
         return self._fields
@@ -94,7 +96,6 @@ class PageContent(models.Model):
     cleaned_title = models.CharField(max_length=40, editable=False)
     typ = models.CharField(max_length=12, choices=CONTENT_TYPES, verbose_name='type')
     content = models.TextField(blank=True)
-    extra = models.CharField(max_length=42, blank=True)
 
     class Meta:
         unique_together = (('title', 'page'),)
@@ -107,9 +108,28 @@ class PageContent(models.Model):
         self.cleaned_title = clean_field_title(self.title)
         return super(PageContent, self).save(*args, **kwargs)
 
+
+    def get_content(self):
+        if self.typ == 'fk':
+            if not self.content:
+                return None
+
+            options = stemplates.get_field(self.page.template, self.title)[2]
+
+            app_label = options.get('app', 'stoat')
+            model_name = options.get('model', 'Page')
+            model = get_model(app_label, model_name)
+
+            try:
+                return model.objects.get(id=self.content)
+            except model.DoesNotExist:
+                return None
+        else:
+            return self.content
+
 def clean_content(sender, instance, **kwargs):
     page = instance
-    fields = dict(stemplates.get_fields(page.template))
+    fields = dict(stemplates.get_fields_bare(page.template))
     current_contents = list(page.pagecontent_set.all())
 
     for content in current_contents:

@@ -1,4 +1,5 @@
 from django import forms
+from django.db.models.loading import get_model
 from models import Page
 from stemplates import get_fields
 from models import clean_field_title
@@ -51,7 +52,11 @@ def _get_field(typ, title, options):
                                    widget=FileBrowseWidget(attrs=attrs))
 
     if typ == 'fk':
-        return forms.ModelChoiceField(Page.objects.all(), label=title, required=required)
+        app_label = options.get('app', 'stoat')
+        model_name = options.get('model', 'Page')
+        model = get_model(app_label, model_name)
+
+        return forms.ModelChoiceField(model.objects.all(), label=title, required=required)
 
     assert False, "Unknown field type '%s' for field '%s'" % (typ, title)
 
