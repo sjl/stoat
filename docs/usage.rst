@@ -12,13 +12,14 @@ example to get you started::
     STOAT_TEMPLATES = {
         'Default': ['default.html', [
             ['Heading', 'char'],
-            ['Body',    'text'],
+            ['Body',    'ckeditor', { 'required': True }],
             ['Sidebar', 'text'],
         ]],
         'Product': ['pages/product.html', [
-            ['Price',       'int'],
+            ['Price',       'int', { 'required': True }],
             ['Description', 'text'],
             ['Image',       'img'],
+            ['Salesperson', 'fk', { 'app': 'auth', 'model': 'User' }],
         ]],
     }
     STOAT_DEFAULT_TEMPLATE = 'Default'
@@ -26,12 +27,23 @@ example to get you started::
 The ``STOAT_TEMPLATES`` setting contains a dictionary mapping template names to
 template definitions.
 
-Each template definition consists of a path and a list of fields.  The path is
-a normal Django template path, like you might use with ``render_to_response``.
+Each template definition consists of:
+
+* A path
+* A list of fields
+* A dictionary of configuration options (optional)
+
+The path is a normal Django template path, like you might use with
+``render_to_response``.
 
 Each field is a list containing a name and a field type.  The field name is how the
 field will be labels in the admin and referred to in your templates, and the field
 type is one of the supported types detailed in the next section.
+
+The option dictionary maps options to values.  Some options (such as ``required``)
+can be used with any kind of field, while others are specific to a certain field
+type.  See the `Field Options`_ section for more information on universal
+options, and the `Field Types`_ section for options specific to a single type.
 
 There's also a ``STOAT_DEFAULT_TEMPLATE`` setting that you need to set to the name of
 the template that should be considered the default.
@@ -59,6 +71,11 @@ ckeditor
 
 A `CKEditor`_ field.  This requires that `django-ckeditor`_ be installed.
 
+**Options**
+
+* ``config``: A string defining which of the ``CKEDITOR_CONFIGS`` should be used for
+  this field.
+
 decimal
 ~~~~~~~
 
@@ -73,6 +90,17 @@ float
 ~~~~~
 
 A basic Django `FloatField`_.
+
+fk
+~~
+
+A foreign key to a model.  When using this field you *must* provide both of its
+options.
+
+**Options**
+
+* ``app``: A string containing the name of the app the model is from.
+* ``model``: A string containing the name of the model.
 
 img
 ~~~
@@ -105,6 +133,17 @@ A basic Django `URLField`_ (with ``verify_exists`` set to ``False``).
 .. _django-filebrowser: http://readthedocs.org/docs/django-filebrowser/latest/#filebrowsefield
 .. _ckeditor: http://ckeditor.com/
 .. _django-ckeditor: http://github.com/dwaiter/django-ckeditor
+
+Field Options
+-------------
+
+The following options can be used for any field.
+
+``required``
+~~~~~~~~~~~~
+
+Ensures that this field is not left blank when editing the page in the admin
+interface.
 
 Further Usage
 -------------
