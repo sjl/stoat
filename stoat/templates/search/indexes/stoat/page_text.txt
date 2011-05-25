@@ -1,0 +1,5 @@
+{{ object.title }}
+
+{% for pc in object.pagecontent_set.all %}
+    {{ pc.content }}
+{% endfor %}
