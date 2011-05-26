@@ -127,6 +127,7 @@ class PageContent(models.Model):
         else:
             return self.content
 
+
 def clean_content(sender, instance, **kwargs):
     page = instance
     fields = dict(stemplates.get_fields_bare(page.template))
