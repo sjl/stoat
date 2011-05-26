@@ -34,6 +34,7 @@ Documentation
    why
    installation
    usage
+   inlines
    admin
    configuration
    templating
