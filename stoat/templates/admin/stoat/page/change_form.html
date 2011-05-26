@@ -29,6 +29,10 @@
                         {% for field in content_form %}
                             {% include "admin/stoat/page_content.html" %}
                         {% endfor %}
+
+                        {% for inline_admin_formset in inline_admin_formsets %}
+                            {% include inline_admin_formset.opts.template %}
+                        {% endfor %}
                     {% else %}
                         {% for fieldset in adminform %}
                             {% include "admin/includes/fieldset.html" %}

@@ -1,10 +1,28 @@
-from django.contrib import admin
-from models import Page, PageContent, clean_field_title
-from django.shortcuts import get_object_or_404
-from django.contrib.admin.views.main import ChangeList
-from views import move_page
-import forms as stoat_forms
+# {{{
 from django.conf import settings
+from django.contrib import admin
+from django.contrib.admin import helpers
+from django.contrib.admin.util import unquote
+from django.contrib.admin.views.main import ChangeList
+from django.core.exceptions import PermissionDenied
+from django.db import transaction
+from django.forms.formsets import all_valid
+from django.http import Http404
+from django.shortcuts import get_object_or_404
+from django.utils.decorators import method_decorator
+from django.utils.encoding import force_unicode
+from django.utils.html import escape
+from django.utils.safestring import mark_safe
+from django.utils.translation import ugettext as _
+from django.views.decorators.csrf import csrf_protect
+
+import forms as stoat_forms
+import stemplates
+from models import Page, PageContent, clean_field_title
+from views import move_page
+
+csrf_protect_m = method_decorator(csrf_protect)
+# }}}
 
 def check_empty_dict(GET_dict):
     empty = True
@@ -14,11 +32,13 @@ def check_empty_dict(GET_dict):
             empty = False
     return empty
 
+
 class TreeChangeList(ChangeList):
     def get_ordering(self):
         if not check_empty_dict(self.params):
             return super(TreeChangeList, self).get_ordering()
         return None, 'asc'
+
 
 class PageAdmin(admin.ModelAdmin):
     save_on_top = True
@@ -31,6 +51,30 @@ class PageAdmin(admin.ModelAdmin):
     prepopulated_fields = { 'slug': ('title',), }
     form = stoat_forms.PageForm
 
+    def _find_inlines(self, page):
+        fields = stemplates.get_fields(page.template)
+        inline_fields = [f for f in fields if f[1] == 'inline']
+
+        for inline_field in inline_fields:
+            import_line = inline_field[2]['import']
+
+            module_name, inline_name = import_line.rsplit('.', 1)
+            admin_module = __import__(module_name, fromlist=[inline_name])
+
+            yield getattr(admin_module, inline_name)
+
+    def _create_inlines(self, page):
+        instances = []
+        for inline_class in self._find_inlines(page):
+            inline_instance = inline_class(self.model, self.admin_site)
+            instances.append(inline_instance)
+        return instances
+
+
+    def get_formsets(self, request, obj=None):
+        if obj:
+            for inline in self._create_inlines(obj):
+                yield inline.get_formset(request, obj)
 
     def get_changelist(self, request):
         return TreeChangeList
@@ -53,6 +97,114 @@ class PageAdmin(admin.ModelAdmin):
         return super(PageAdmin, self).add_view(request, form_url=form_url,
                                                extra_context=extra_context)
 
+    def save_model(self, request, obj, form, change):
+        obj.save()
+
+        if not form.ignore_content:
+            content_data = [(k.split('_', 1)[1], v)
+                            for k, v in form.data.items()
+                            if k.startswith('content_')]
+
+            for title, content in content_data:
+                pc = PageContent.objects.get(page=obj, cleaned_title=title)
+                pc.content = content
+                pc.save()
+
+
+    @csrf_protect_m
+    @transaction.commit_on_success
+    def _django_change_view(self, request, object_id, extra_context=None):
+        "The 'change' admin view for this model."
+        model = self.model
+        opts = model._meta
+
+        obj = self.get_object(request, unquote(object_id))
+        previous_template = obj.template                                                            # STOAT: Save previous template
+
+        if not self.has_change_permission(request, obj):
+            raise PermissionDenied
+
+        if obj is None:
+            raise Http404(_('%(name)s object with primary key %(key)r does not exist.') % {'name': force_unicode(opts.verbose_name), 'key': escape(object_id)})
+
+        if request.method == 'POST' and "_saveasnew" in request.POST:
+            return self.add_view(request, form_url='../add/')
+
+        ModelForm = self.get_form(request, obj)
+        formsets = []
+        if request.method == 'POST':
+            form = ModelForm(request.POST, request.FILES, instance=obj)
+            if form.is_valid():
+                form_validated = True
+                new_object = self.save_form(request, form, change=True)
+            else:
+                form_validated = False
+                new_object = obj
+            prefixes = {}
+            if previous_template == new_object.template:                                            # STOAT: Template check
+                for FormSet, inline in zip(self.get_formsets(request, new_object),
+                                           self._create_inlines(obj)):                              # STOAT: _create_inlines
+                    prefix = FormSet.get_default_prefix()
+                    prefixes[prefix] = prefixes.get(prefix, 0) + 1
+                    if prefixes[prefix] != 1:
+                        prefix = "%s-%s" % (prefix, prefixes[prefix])
+                    formset = FormSet(request.POST, request.FILES,
+                                      instance=new_object, prefix=prefix,
+                                      queryset=inline.queryset(request))
+
+                    formsets.append(formset)
+
+            if all_valid(formsets) and form_validated:
+                self.save_model(request, new_object, form, change=True)
+                form.save_m2m()
+                for formset in formsets:
+                    self.save_formset(request, form, formset, change=True)
+
+                change_message = self.construct_change_message(request, form, formsets)
+                self.log_change(request, new_object, change_message)
+                return self.response_change(request, new_object)
+
+        else:
+            form = ModelForm(instance=obj)
+            prefixes = {}
+            for FormSet, inline in zip(self.get_formsets(request, obj), self._create_inlines(obj)): # STOAT: _create_inlines
+                prefix = FormSet.get_default_prefix()
+                prefixes[prefix] = prefixes.get(prefix, 0) + 1
+                if prefixes[prefix] != 1:
+                    prefix = "%s-%s" % (prefix, prefixes[prefix])
+                formset = FormSet(instance=obj, prefix=prefix,
+                                  queryset=inline.queryset(request))
+                formsets.append(formset)
+
+        adminForm = helpers.AdminForm(form, self.get_fieldsets(request, obj),
+            self.prepopulated_fields, self.get_readonly_fields(request, obj),
+            model_admin=self)
+        media = self.media + adminForm.media
+
+        inline_admin_formsets = []
+        for inline, formset in zip(self._create_inlines(obj), formsets):                            # STOAT: _create_inlines
+            fieldsets = list(inline.get_fieldsets(request, obj))
+            readonly = list(inline.get_readonly_fields(request, obj))
+            inline_admin_formset = helpers.InlineAdminFormSet(inline, formset,
+                fieldsets, readonly, model_admin=self)
+            inline_admin_formsets.append(inline_admin_formset)
+            media = media + inline_admin_formset.media
+
+        context = {
+            'title': _('Change %s') % force_unicode(opts.verbose_name),
+            'adminform': adminForm,
+            'object_id': object_id,
+            'original': obj,
+            'is_popup': "_popup" in request.REQUEST,
+            'media': mark_safe(media),
+            'inline_admin_formsets': inline_admin_formsets,
+            'errors': helpers.AdminErrorList(form, formsets),
+            'root_path': self.admin_site.root_path,
+            'app_label': opts.app_label,
+        }
+        context.update(extra_context or {})
+        return self.render_change_form(request, context, change=True, obj=obj)
+
     def change_view(self, request, object_id, extra_context=None):
         extra_context = extra_context or {}
         page = get_object_or_404(Page, id=object_id)
@@ -62,6 +214,7 @@ class PageAdmin(admin.ModelAdmin):
 
         if request.POST:
             template = request.POST.get('template', page.template)
+
             content_form = stoat_forms.get_content_form(template, request.POST)
         else:
             initial = {}
@@ -76,21 +229,7 @@ class PageAdmin(admin.ModelAdmin):
             'parent': parent,
         })
 
-        return super(PageAdmin, self).change_view(request, object_id,
-                                                  extra_context=extra_context)
-
-    def save_model(self, request, obj, form, change):
-        obj.save()
-
-        if not form.ignore_content:
-            content_data = [(k.split('_', 1)[1], v)
-                            for k, v in form.data.items()
-                            if k.startswith('content_')]
-
-            for title, content in content_data:
-                pc = PageContent.objects.get(page=obj, cleaned_title=title)
-                pc.content = content
-                pc.save()
+        return self._django_change_view(request, object_id, extra_context=extra_context)
 
 
     def indented_title(self, obj):
@@ -138,9 +277,11 @@ class PageAdmin(admin.ModelAdmin):
         js = ('stoat.js',)
 admin.site.register(Page, PageAdmin)
 
+
 class PageContentAdmin(admin.ModelAdmin):
     list_display = ('title', 'typ', 'page', 'content')
     list_filter = ('page', 'typ')
+
 
 if getattr(settings, 'STOAT_DEBUG', False):
     admin.site.register(PageContent, PageContentAdmin)

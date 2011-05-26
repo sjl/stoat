@@ -58,6 +58,9 @@ def _get_field(typ, title, options):
 
         return forms.ModelChoiceField(model.objects.all(), label=title, required=required)
 
+    if typ == 'inline':
+        return None
+
     assert False, "Unknown field type '%s' for field '%s'" % (typ, title)
 
 def get_content_form(tname, data=None, initial=None):
@@ -73,7 +76,8 @@ def get_content_form(tname, data=None, initial=None):
 
     for title, typ, options in fs:
         f = _get_field(typ, title, options)
-        form.fields['content_' + clean_field_title(title)] = f
+        if f:
+            form.fields['content_' + clean_field_title(title)] = f
 
     return form
 
