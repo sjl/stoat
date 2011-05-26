@@ -44,6 +44,7 @@ class StoatTestCase(TestCase):
         settings.INSTALLED_APPS = self.OLD_INSTALLED_APPS
         settings.MIDDLEWARE_CLASSES = self.OLD_MIDDLEWARE_CLASSES
 
+
 def get(model, **kwargs):
     try:
         return model.objects.get(**kwargs)

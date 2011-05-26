@@ -29,6 +29,7 @@ class PageTemplatesTestCase(StoatTestCase):
         self.assertTrue("<h2>Stoat-Sidebar-Heading</h2>" in resp.content)
         self.assertTrue("<p>Stoat-Sidebar-Body</p>" in resp.content)
         self.assertTrue("<section>Stoat-Body</section>" in resp.content)
+
     def test_other_template(self):
         p = Page.add_root(title='Sample', slug='sample', template='Other')
         p.save()

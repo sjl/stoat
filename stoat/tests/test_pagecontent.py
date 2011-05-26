@@ -15,6 +15,7 @@ class PageContentTestCase(StoatTestCase):
         self.assertEqual(pc1.content, '')
         self.assertEqual(pc2.content, '')
         self.assertEqual(pc3.content, '')
+
     def test_pagecontent_deletion(self):
         p = Page.add_root(title='Sample', slug='sample', template='Default')
         p.save()
@@ -41,6 +42,7 @@ class PageContentTestCase(StoatTestCase):
         self.assertEqual(pc2, None)
         self.assertEqual(pc3, None)
         self.assertEqual(pc4.content, '')
+
     def test_pagecontent_preservation(self):
         p = Page.add_root(title='Sample', slug='sample', template='Default')
         p.save()
