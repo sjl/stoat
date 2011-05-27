@@ -23,3 +23,29 @@ def current_page(context, asvar=None):
 
     return ''
 
+@tag(register, [Optional([Constant("as"), Name()])])
+def nav_roots(context, asvar=None):
+    roots = list(models.Page.objects.filter(depth=1))
+
+    if asvar:
+        context[asvar] = roots
+    else:
+        context['nav'] = roots
+
+    return ''
+
+
+@tag(register, [Optional([Constant("as"), Name()])])
+def nav_roots_and_children(context, asvar=None):
+    roots = list(models.Page.objects.filter(depth=1))
+    results = []
+    for root in roots:
+        results.append([root, root.get_children().filter(show_in_nav=True)])
+
+    if asvar:
+        context[asvar] = results
+    else:
+        context['nav'] = results
+
+    return ''
+
