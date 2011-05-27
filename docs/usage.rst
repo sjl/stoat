@@ -11,9 +11,10 @@ example to get you started::
 
     STOAT_TEMPLATES = {
         'Default': ['default.html', [
-            ['Heading', 'char'],
-            ['Body',    'ckeditor', { 'required': True }],
-            ['Sidebar', 'text'],
+            ['Heading',       'char'],
+            ['Body',          'ckeditor', { 'required': True }],
+            ['Sidebar Body',  'text'],
+            ['Sidebar Links', 'inline', { 'import': 'sidebar.admin.SidebarLinkInline' }],
         ]],
         'Product': ['pages/product.html', [
             ['Price',       'int', { 'required': True }],
@@ -107,6 +108,13 @@ img
 
 A `FileBrowseField`_ from `django-filebrowser`_, with the ``'Image'`` type.
 
+inline
+~~~~~~
+
+An ``inline`` field allows you to create models that have a `ForeignKey`_ pointing at Stoat pages.
+
+Check out the :doc:`Inlines </inlines>`_ documentation for more information.
+
 int
 ~~~
 
@@ -126,6 +134,7 @@ A basic Django `URLField`_ (with ``verify_exists`` set to ``False``).
 .. _CharField: http://docs.djangoproject.com/en/dev/ref/forms/fields/#charfield
 .. _FloatField: http://docs.djangoproject.com/en/dev/ref/forms/fields/#floatfield
 .. _DecimalField: http://docs.djangoproject.com/en/dev/ref/forms/fields/#decimalfield
+.. _ForeignKey: https://docs.djangoproject.com/en/1.3/ref/models/fields/#foreignkey
 .. _URLField: http://docs.djangoproject.com/en/dev/ref/forms/fields/#urlfield
 .. _EmailField: http://docs.djangoproject.com/en/dev/ref/forms/fields/#emailfield
 .. _FileBrowseField: http://readthedocs.org/docs/django-filebrowser/latest/fieldswidgets.html#filebrowsefield

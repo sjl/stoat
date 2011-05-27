@@ -1,0 +1,7 @@
+{% extends "stoat/tests/base.html" %}
+
+{% block content %}
+    <h1>{{ page.title }}</h1>
+    <section>{{ page.fields.body }}</section>
+    <aside>{{ page.f.test_int }}</aside>
+{% endblock %}
