@@ -19,7 +19,7 @@ class StoatTestCase(TestCase):
         settings.STOAT_DEFAULT_TEMPLATE = 'Default'
 
         self.OLD_ROOT_URLCONF = getattr(settings, 'ROOT_URLCONF')
-        settings.ROOT_URLCONF = 'stoat.tests.util.urls'
+        settings.ROOT_URLCONF = 'stoat.tests.urls'
 
         self.OLD_INSTALLED_APPS = getattr(settings, 'INSTALLED_APPS')
         settings.INSTALLED_APPS = (
