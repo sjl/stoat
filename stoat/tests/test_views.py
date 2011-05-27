@@ -1,66 +1,37 @@
 from base_test import StoatTestCase
 
-from stoat.models import Page
-
-class PageViewsTestCase(StoatTestCase):
+class ViewsTestCase(StoatTestCase):
     def test_slug(self):
-        p = Page.add_root(title='Sample', slug='sample', template='Default')
-        p.save()
-
-        resp = self.client.get('/sample/')
+        resp = self.client.get('/top-one/')
         self.assertEqual(resp.status_code, 200)
 
-        self.assertTrue('page' in resp.context)
-
-        self.assertTrue("Sample" in resp.content)
+        self.assertTrue("Top One" in resp.content)
 
     def test_noslug(self):
-        p = Page.add_root(title='Main', slug='', template='Default')
-        p.save()
-
         resp = self.client.get('/')
         self.assertEqual(resp.status_code, 200)
 
-        self.assertTrue('page' in resp.context)
-
-        self.assertTrue("Main" in resp.content)
+        self.assertTrue("Home" in resp.content)
 
     def test_child(self):
-        p = Page.add_root(title='Sample', slug='sample', template='Default')
-        p.save()
-
-        p2 = p.add_child(title='Cats', slug='cats', template='Default')
-        p2.save()
-
-        resp = self.client.get('/sample/cats/')
+        resp = self.client.get('/top-one/one-sub/')
         self.assertEqual(resp.status_code, 200)
 
-        self.assertTrue('page' in resp.context)
-
-        self.assertTrue("Cats" in resp.content)
+        self.assertTrue("One Sub" in resp.content)
 
     def test_404(self):
-        p = Page.add_root(title='Sample', slug='sample', template='Default')
-        p.save()
-
-        resp = self.client.get('/nom/')
+        resp = self.client.get('/non-existant/')
         self.assertEqual(resp.status_code, 404)
 
 
     def test_trailing_slash_redirect(self):
-        p = Page.add_root(title='Sample', slug='sample', template='Default')
-        p.save()
-
-        resp = self.client.get('/sample')
+        resp = self.client.get('/top-one')
 
         self.assertEqual(resp.status_code, 301)
-        self.assertEqual(resp['Location'], 'http://testserver/sample/')
+        self.assertEqual(resp['Location'], 'http://testserver/top-one/')
 
     def test_trailing_slash_404(self):
-        p = Page.add_root(title='Sample', slug='sample', template='Default')
-        p.save()
-
-        resp = self.client.get('/nom')
+        resp = self.client.get('/non-existant')
 
         self.assertEqual(resp.status_code, 404)
 

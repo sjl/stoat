@@ -2,6 +2,9 @@ from django.conf import settings
 from django.test import TestCase
 
 class StoatTestCase(TestCase):
+    fixtures = ['stoat_test_data.json']
+    urls = 'stoat.tests.urls'
+
     def setUp(self):
         self.OLD_STOAT_TEMPLATES = getattr(settings, 'STOAT_TEMPLATES')
         settings.STOAT_TEMPLATES = {
@@ -13,13 +16,13 @@ class StoatTestCase(TestCase):
             'Other': ('stoat/tests/other.html', (
                 ('Body',            'text'),
                 ('Test Int',        'int'),
-            )),}
+            )),
+            'Navigation': ('stoat/tests/navigation.html', (
+            )),
+        }
 
         self.OLD_STOAT_DEFAULT_TEMPLATE = getattr(settings, 'STOAT_DEFAULT_TEMPLATE')
         settings.STOAT_DEFAULT_TEMPLATE = 'Default'
-
-        self.OLD_ROOT_URLCONF = getattr(settings, 'ROOT_URLCONF')
-        settings.ROOT_URLCONF = 'stoat.tests.urls'
 
         self.OLD_INSTALLED_APPS = getattr(settings, 'INSTALLED_APPS')
         settings.INSTALLED_APPS = (
@@ -40,7 +43,6 @@ class StoatTestCase(TestCase):
     def tearDown(self):
         settings.STOAT_TEMPLATES = self.OLD_STOAT_TEMPLATES
         settings.STOAT_DEFAULT_TEMPLATE = self.OLD_STOAT_DEFAULT_TEMPLATE
-        settings.ROOT_URLCONF = self.OLD_ROOT_URLCONF
         settings.INSTALLED_APPS = self.OLD_INSTALLED_APPS
         settings.MIDDLEWARE_CLASSES = self.OLD_MIDDLEWARE_CLASSES
 

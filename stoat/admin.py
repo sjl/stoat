@@ -43,9 +43,13 @@ PAGE_FIELDS = ['title', 'slug', 'template',]
 if not getattr(settings, 'STOAT_HIDE_NAVIGATION', False):
     PAGE_FIELDS.append('show_in_nav')
 
+PAGE_COLS = ['indented_title', 'url']
+if getattr(settings, 'STOAT_DEBUG', False):
+    PAGE_COLS.append('template')
+
 class PageAdmin(admin.ModelAdmin):
     save_on_top = True
-    list_display = ('indented_title', 'url')
+    list_display = PAGE_COLS
     fieldsets = (
         (None, {
             'fields': PAGE_FIELDS,

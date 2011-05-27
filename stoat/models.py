@@ -130,6 +130,10 @@ class PageContent(models.Model):
 
 
 def clean_content(sender, instance, **kwargs):
+    if kwargs.get('raw'):
+        # We're in loaddata (or something similar).
+        return
+
     page = instance
     fields = dict(stemplates.get_fields_bare(page.template))
     current_contents = list(page.pagecontent_set.all())
