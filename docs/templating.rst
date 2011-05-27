@@ -4,8 +4,11 @@ Templating
 The templates you make to use with Stoat are simply Django templates that take
 advantage of an extra variable.
 
-The Page Variable
------------------
+.. contents::
+   :local:
+
+The ``Page`` Variable
+---------------------
 
 When Stoat renders a template it adds a ``page`` variable to the context.  This
 variable has a few properties you'll want to use.
@@ -19,9 +22,6 @@ The title of the page as defined in the admin interface.
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 A normal Django ``get_absolute_url`` method that will return the page's URL.
-
-Page Fields
------------
 
 ``page.fields``
 ~~~~~~~~~~~~~~~
@@ -66,12 +66,17 @@ some typing.
 Navigation
 ----------
 
-Each page also has some properties to help you build navigation in your templates.
+Stoat contains two sets of helpers for building navigation menus in your templates:
+template tags and ``Page`` methods.
 
-Every page has a ``show_in_nav`` option that determines whether they will be part of these lists.
+Every page has a ``show_in_nav`` option that determines whether they will be part of
+the lists returned by these helpers.
+
+Page Methods
+~~~~~~~~~~~~
 
 ``page.breadcrumbs``
-~~~~~~~~~~~~~~~~~~~~
+````````````````````
 
 A list of the page's ancestors and itself.  For example, imagine you have the
 following page layout::
@@ -103,17 +108,17 @@ Here's an example of creating a simple list of breadcrumbs in an HTML template::
     </ul>
 
 ``page.nav_siblings``
-~~~~~~~~~~~~~~~~~~~~~
+`````````````````````
 
 A list of the page's siblings, including itself.
 
 ``page.nav_children``
-~~~~~~~~~~~~~~~~~~~~~
+`````````````````````
 
 A list of the page's children.
 
 ``page.nav_siblings_and_children``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+``````````````````````````````````
 
 A nested list of the page's siblings (including itself) and their children. For
 example, imagine the following layout::
@@ -164,13 +169,21 @@ This property can be useful if you're trying to build a two-level navigation lis
         {% endfor %}
     </ul>
 
+Template Tags
+~~~~~~~~~~~~~
 
-``page.nav_roots``
-~~~~~~~~~~~~~~~~~~
+To use these template tags you'll need to ``{% load stoat %}`` first.
+
+These tags do *not* require that there be a Stoat page at the current URL, so you can
+safely use them anywhere you like.
+
+``nav_roots``
+`````````````
 
 A list of all the root pages.
 
-``page.nav_roots_and_children``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+``nav_roots_and_children``
+``````````````````````````
 
-A nested list of all of the root pages and their children (this is similar to `page.nav_siblings_and_children`_).
+A nested list of all of the root pages and their children (similar in structure to
+`page.nav_siblings_and_children`_).
