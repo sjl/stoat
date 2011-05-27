@@ -39,13 +39,16 @@ class TreeChangeList(ChangeList):
             return super(TreeChangeList, self).get_ordering()
         return None, 'asc'
 
+PAGE_FIELDS = ['title', 'slug', 'template',]
+if not getattr(settings, 'STOAT_HIDE_NAVIGATION', False):
+    PAGE_FIELDS.append('show_in_nav')
 
 class PageAdmin(admin.ModelAdmin):
     save_on_top = True
     list_display = ('indented_title', 'url')
     fieldsets = (
         (None, {
-            'fields': ('title', 'slug', 'template', 'show_in_nav'),
+            'fields': PAGE_FIELDS,
         }),
     )
     prepopulated_fields = { 'slug': ('title',), }
