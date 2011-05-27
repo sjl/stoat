@@ -161,3 +161,14 @@ This property can be useful if you're trying to build a two-level navigation lis
             </li>
         {% endfor %}
     </ul>
+
+
+``page.nav_roots``
+~~~~~~~~~~~~~~~~~~
+
+A list of all the root pages.
+
+``page.nav_roots_and_children``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A nested list of all of the root pages and their children (this is similar to `page.nav_siblings_and_children`_).

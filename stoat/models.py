@@ -89,6 +89,19 @@ class Page(MP_Node):
 
         return results
 
+    def nav_roots(self):
+        return list(self.get_root().get_siblings())
+
+    def nav_roots_and_children(self):
+        roots = self.nav_roots()
+        results = []
+        for root in roots:
+            results.append([root, root.get_children()])
+
+        return results
+
+
+
 
 class PageContent(models.Model):
     page = models.ForeignKey(Page)
