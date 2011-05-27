@@ -68,6 +68,8 @@ Navigation
 
 Each page also has some properties to help you build navigation in your templates.
 
+Every page has a ``show_in_nav`` option that determines whether they will be part of these lists.
+
 ``page.breadcrumbs``
 ~~~~~~~~~~~~~~~~~~~~
 

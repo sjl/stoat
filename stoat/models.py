@@ -27,6 +27,7 @@ class Page(MP_Node):
     template = models.CharField(max_length=100, choices=TEMPLATES,
                                 default=settings.STOAT_DEFAULT_TEMPLATE)
     url = models.CharField(max_length=255, blank=True, unique=True)
+    show_in_nav = models.BooleanField(default=False)
 
     class Meta:
         pass
@@ -76,27 +77,27 @@ class Page(MP_Node):
 
 
     def nav_siblings(self):
-        return list(self.get_siblings())
+        return list(self.get_siblings().filter(show_in_nav=True))
 
     def nav_children(self):
-        return list(self.get_children())
+        return list(self.get_children().filter(show_in_nav=True))
 
     def nav_siblings_and_children(self):
         siblings = self.nav_siblings()
         results = []
         for sibling in siblings:
-            results.append([sibling, sibling.get_children()])
+            results.append([sibling, sibling.get_children().filter(show_in_nav=True)])
 
         return results
 
     def nav_roots(self):
-        return list(self.get_root().get_siblings())
+        return list(self.get_root().get_siblings().filter(show_in_nav=True))
 
     def nav_roots_and_children(self):
         roots = self.nav_roots()
         results = []
         for root in roots:
-            results.append([root, root.get_children()])
+            results.append([root, root.get_children().filter(show_in_nav=True)])
 
         return results
 

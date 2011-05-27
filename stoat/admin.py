@@ -28,7 +28,7 @@ def check_empty_dict(GET_dict):
     empty = True
     for k, v in GET_dict.items():
         # Don't disable on p(age) or 'all' GET param
-        if v and k != 'p' and k != 'all': 
+        if v and k != 'p' and k != 'all':
             empty = False
     return empty
 
@@ -45,7 +45,7 @@ class PageAdmin(admin.ModelAdmin):
     list_display = ('indented_title', 'url')
     fieldsets = (
         (None, {
-            'fields': ('title', 'slug', 'template'),
+            'fields': ('title', 'slug', 'template', 'show_in_nav'),
         }),
     )
     prepopulated_fields = { 'slug': ('title',), }
