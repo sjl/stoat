@@ -32,3 +32,9 @@ STOAT_DEBUG
 Set this to ``True`` if you're working on Stoat itself.  It does the following:
 
 * Show the ``PageContent`` model in the admin interface.
+* Show the ``Template`` column in the Page admin listing page.
+
+STOAT_HIDE_NAVIGATION
+~~~~~~~~~~~~~~~~~~~~~
+
+Set this to ``True`` to hide the ``show_in_nav`` field in the page admin.

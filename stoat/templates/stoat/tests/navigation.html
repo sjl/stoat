@@ -1,0 +1,31 @@
+{% extends "stoat/tests/base.html" %}
+{% load stoat %}
+
+{% block content %}
+    {% nav_roots as nav_roots %}
+    {% nav_roots_and_children as nav_roots_and_children %}
+
+    <nav>
+        <ul>
+            {% for root in nav_roots %}
+                <li class="roots-root">{{ root.title }}</li>
+            {% endfor %}
+        </ul>
+    </nav>
+
+    <nav>
+        <ul>
+            {% for root, children in nav_roots_and_children %}
+                <li>
+                    <span class="rac-root">{{ root.title }}</span>
+
+                    <ul>
+                        {% for child in children %}
+                            <li class="rac-child">{{ child.title }}</li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endfor %}
+        </ul>
+    </nav>
+{% endblock %}

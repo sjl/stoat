@@ -1,0 +1,301 @@
+[
+    {
+        "pk": 1, 
+        "model": "stoat.page", 
+        "fields": {
+            "show_in_nav": true, 
+            "title": "Home", 
+            "url": "/", 
+            "numchild": 0, 
+            "depth": 1, 
+            "template": "Default", 
+            "path": "0004", 
+            "slug": ""
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "stoat.page", 
+        "fields": {
+            "show_in_nav": true, 
+            "title": "Top One", 
+            "url": "/top-one/", 
+            "numchild": 2, 
+            "depth": 1, 
+            "template": "Other", 
+            "path": "0005", 
+            "slug": "top-one"
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "stoat.page", 
+        "fields": {
+            "show_in_nav": true, 
+            "title": "One Sub", 
+            "url": "/top-one/one-sub/", 
+            "numchild": 1, 
+            "depth": 2, 
+            "template": "Other", 
+            "path": "00050001", 
+            "slug": "one-sub"
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "stoat.page", 
+        "fields": {
+            "show_in_nav": true, 
+            "title": "One Sub Sub", 
+            "url": "/top-one/one-sub/one-sub-sub/", 
+            "numchild": 0, 
+            "depth": 3, 
+            "template": "Other", 
+            "path": "000500010001", 
+            "slug": "one-sub-sub"
+        }
+    }, 
+    {
+        "pk": 7, 
+        "model": "stoat.page", 
+        "fields": {
+            "show_in_nav": false, 
+            "title": "One Sub Hidden", 
+            "url": "/top-one/one-sub-hidden/", 
+            "numchild": 0, 
+            "depth": 2, 
+            "template": "Default", 
+            "path": "00050002", 
+            "slug": "one-sub-hidden"
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "stoat.page", 
+        "fields": {
+            "show_in_nav": true, 
+            "title": "Top Two", 
+            "url": "/top-two/", 
+            "numchild": 0, 
+            "depth": 1, 
+            "template": "Other", 
+            "path": "0006", 
+            "slug": "top-two"
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "stoat.page", 
+        "fields": {
+            "show_in_nav": false, 
+            "title": "Top Hidden", 
+            "url": "/top-hidden/", 
+            "numchild": 0, 
+            "depth": 1, 
+            "template": "Default", 
+            "path": "0008", 
+            "slug": "top-hidden"
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "stoat.page", 
+        "fields": {
+            "show_in_nav": false, 
+            "title": "Navigator", 
+            "url": "/navigator/", 
+            "numchild": 0, 
+            "depth": 1, 
+            "template": "Navigation", 
+            "path": "0009", 
+            "slug": "navigator"
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "stoat.pagecontent", 
+        "fields": {
+            "content": "home sidebar body content", 
+            "typ": "text", 
+            "page": 1, 
+            "cleaned_title": "sidebar_body", 
+            "title": "Sidebar Body"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "stoat.pagecontent", 
+        "fields": {
+            "content": "home sidebar heading content", 
+            "typ": "char", 
+            "page": 1, 
+            "cleaned_title": "sidebar_heading", 
+            "title": "Sidebar Heading"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "stoat.pagecontent", 
+        "fields": {
+            "content": "home body content", 
+            "typ": "text", 
+            "page": 1, 
+            "cleaned_title": "body", 
+            "title": "Body"
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "stoat.pagecontent", 
+        "fields": {
+            "content": "1", 
+            "typ": "int", 
+            "page": 2, 
+            "cleaned_title": "test_int", 
+            "title": "Test Int"
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "stoat.pagecontent", 
+        "fields": {
+            "content": "top one body content", 
+            "typ": "text", 
+            "page": 2, 
+            "cleaned_title": "body", 
+            "title": "Body"
+        }
+    }, 
+    {
+        "pk": 7, 
+        "model": "stoat.pagecontent", 
+        "fields": {
+            "content": "2", 
+            "typ": "int", 
+            "page": 3, 
+            "cleaned_title": "test_int", 
+            "title": "Test Int"
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "stoat.pagecontent", 
+        "fields": {
+            "content": "top two content", 
+            "typ": "text", 
+            "page": 3, 
+            "cleaned_title": "body", 
+            "title": "Body"
+        }
+    }, 
+    {
+        "pk": 9, 
+        "model": "stoat.pagecontent", 
+        "fields": {
+            "content": "1", 
+            "typ": "int", 
+            "page": 4, 
+            "cleaned_title": "test_int", 
+            "title": "Test Int"
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "stoat.pagecontent", 
+        "fields": {
+            "content": "one sub body content", 
+            "typ": "text", 
+            "page": 4, 
+            "cleaned_title": "body", 
+            "title": "Body"
+        }
+    }, 
+    {
+        "pk": 11, 
+        "model": "stoat.pagecontent", 
+        "fields": {
+            "content": "1", 
+            "typ": "int", 
+            "page": 5, 
+            "cleaned_title": "test_int", 
+            "title": "Test Int"
+        }
+    }, 
+    {
+        "pk": 10, 
+        "model": "stoat.pagecontent", 
+        "fields": {
+            "content": "one sub sub body content", 
+            "typ": "text", 
+            "page": 5, 
+            "cleaned_title": "body", 
+            "title": "Body"
+        }
+    }, 
+    {
+        "pk": 14, 
+        "model": "stoat.pagecontent", 
+        "fields": {
+            "content": "top hidden sidebar body content", 
+            "typ": "text", 
+            "page": 6, 
+            "cleaned_title": "sidebar_body", 
+            "title": "Sidebar Body"
+        }
+    }, 
+    {
+        "pk": 13, 
+        "model": "stoat.pagecontent", 
+        "fields": {
+            "content": "top hidden sidebar heading content", 
+            "typ": "char", 
+            "page": 6, 
+            "cleaned_title": "sidebar_heading", 
+            "title": "Sidebar Heading"
+        }
+    }, 
+    {
+        "pk": 12, 
+        "model": "stoat.pagecontent", 
+        "fields": {
+            "content": "top hidden body content", 
+            "typ": "text", 
+            "page": 6, 
+            "cleaned_title": "body", 
+            "title": "Body"
+        }
+    }, 
+    {
+        "pk": 15, 
+        "model": "stoat.pagecontent", 
+        "fields": {
+            "content": "", 
+            "typ": "text", 
+            "page": 7, 
+            "cleaned_title": "body", 
+            "title": "Body"
+        }
+    }, 
+    {
+        "pk": 16, 
+        "model": "stoat.pagecontent", 
+        "fields": {
+            "content": "", 
+            "typ": "char", 
+            "page": 7, 
+            "cleaned_title": "sidebar_heading", 
+            "title": "Sidebar Heading"
+        }
+    }, 
+    {
+        "pk": 17, 
+        "model": "stoat.pagecontent", 
+        "fields": {
+            "content": "", 
+            "typ": "text", 
+            "page": 7, 
+            "cleaned_title": "sidebar_body", 
+            "title": "Sidebar Body"
+        }
+    }
+]

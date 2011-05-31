@@ -28,7 +28,7 @@ def check_empty_dict(GET_dict):
     empty = True
     for k, v in GET_dict.items():
         # Don't disable on p(age) or 'all' GET param
-        if v and k != 'p' and k != 'all': 
+        if v and k != 'p' and k != 'all':
             empty = False
     return empty
 
@@ -39,13 +39,20 @@ class TreeChangeList(ChangeList):
             return super(TreeChangeList, self).get_ordering()
         return None, 'asc'
 
+PAGE_FIELDS = ['title', 'slug', 'template',]
+if not getattr(settings, 'STOAT_HIDE_NAVIGATION', False):
+    PAGE_FIELDS.append('show_in_nav')
+
+PAGE_COLS = ['indented_title', 'url']
+if getattr(settings, 'STOAT_DEBUG', False):
+    PAGE_COLS.append('template')
 
 class PageAdmin(admin.ModelAdmin):
     save_on_top = True
-    list_display = ('indented_title', 'url')
+    list_display = PAGE_COLS
     fieldsets = (
         (None, {
-            'fields': ('title', 'slug', 'template'),
+            'fields': PAGE_FIELDS,
         }),
     )
     prepopulated_fields = { 'slug': ('title',), }

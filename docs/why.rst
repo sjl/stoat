@@ -28,8 +28,8 @@ What Stoat Has
 Here are the currently implemented features:
 
 * Arbitrary URLs.
-* Few dependencies.  At the moment `treebeard`_ and `django-templatetag-sugar` are
-  the only ones, and both install cleanly with pip.
+* Few dependencies.  At the moment `treebeard`_ and `django-templatetag-sugar`_ are
+  the only ones and both install cleanly with pip.
 * Support for (read: doesn't break) the ``APPEND_SLASH`` setting.
 * Multiple templates for pages, with custom fields for each template.
 * Multiple field types, like Filebrowser Image fields.
@@ -38,17 +38,22 @@ Here are the currently implemented features:
 * Built for and compatible with the latest version of Django (1.3), Grappelli and
   Filebrowser.
 * Support for `django-ckeditor`_ for rich text editing.
+* A few simple helpers for creating navigation menus.
+* Support for inline models attached to Pages.
+* Built-in support for `Haystack`_.
+* A small test suite.
 
 .. _treebeard: https://tabo.pe/projects/django-treebeard/docs/1.61/
 .. _django-ckeditor: http://github.com/dwaiter/django-ckeditor
 .. _django-templatetag-sugar: https://github.com/alex/django-templatetag-sugar
+.. _Haystack: http://haystacksearch.org/
 
 What Stoat Doesn't Have Yet
 ---------------------------
 
 Here's what we're planning on adding in the future:
 
-* A test suite.
+* A more extensive test suite.
 * More field types.
 * More documentation.
 * Publishing control.  But it will be configurable and opt-in!
