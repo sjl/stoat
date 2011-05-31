@@ -53,6 +53,7 @@ def current_page(context, asvar=None):
 
     return ''
 
+
 @tag(register, [Optional([Constant("as"), Name()])])
 def nav_roots(context, asvar=None):
     roots = _get_roots()
