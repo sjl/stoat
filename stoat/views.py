@@ -1,12 +1,15 @@
-from django.template import RequestContext
-from django.shortcuts import get_object_or_404, render_to_response
-from django.http import Http404, HttpResponsePermanentRedirect, HttpResponseBadRequest
+# {{{
 from django.conf import settings
+from django.http import Http404, HttpResponsePermanentRedirect, HttpResponseBadRequest
+from django.shortcuts import get_object_or_404, render_to_response
+from django.template import RequestContext
 from django.views.decorators.csrf import csrf_protect
 
-from models import Page
 from forms import MovePageForm
+from models import Page
 from stemplates import get_path
+# }}}
+
 
 def page(request, url):
     if not url.startswith('/'):

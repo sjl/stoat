@@ -1,11 +1,13 @@
+# {{{
 from django.conf import settings
 from django.core.cache import cache
 from django.db import models
-from django.db.models.signals import post_save
 from django.db.models.loading import get_model
+from django.db.models.signals import post_save
 from treebeard.mp_tree import MP_Node
 
 import stemplates
+# }}}
 
 ALLOWED_CHARS = 'abcdefghijklmnopqrstuvwxyz1234567890_'
 def clean_field_title(title):

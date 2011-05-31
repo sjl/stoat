@@ -1,15 +1,18 @@
+# {{{
+import random
+
 from django import template
 from django.core.cache import cache
-from django.shortcuts import get_object_or_404
 from django.http import Http404
+from django.shortcuts import get_object_or_404
 from templatetag_sugar.parser import Name, Constant, Optional
 from templatetag_sugar.register import tag
 
-import random
-
 from .. import models
 
+
 register = template.Library()
+# }}}
 
 def _get_roots():
     return list(models.Page.objects.filter(depth=1, show_in_nav=True))
@@ -21,17 +24,19 @@ def _get_roots_and_children(roots):
         key = 'stoat:pages:%d:children' % (root.id)
         ids = cache.get(key)
         if ids == None:
-            ids = [c.id for c in root.get_children()]
+            ids = [c.id for c in root.get_children().filter(show_in_nav=True)]
             cache.set(key, ids, random.randint(300, 360))
 
         child_ids = child_ids.union(ids)
         results.append([root, ids])
 
-    children = dict([(child.id, child) for child in models.Page.objects.filter(id__in=child_ids)])
+    children = dict([(child.id, child)
+                    for child in models.Page.objects.filter(id__in=child_ids)])
     for result in results:
         result[1] = [children[id] for id in result[1]]
 
     return results
+
 
 @tag(register, [Optional([Constant("as"), Name()])])
 def current_page(context, asvar=None):
