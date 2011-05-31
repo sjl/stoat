@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.cache import cache
 from django.db import models
 from django.db.models.signals import post_save
 from django.db.models.loading import get_model
@@ -27,6 +28,7 @@ class Page(MP_Node):
     template = models.CharField(max_length=100, choices=TEMPLATES,
                                 default=settings.STOAT_DEFAULT_TEMPLATE)
     url = models.CharField(max_length=255, blank=True, unique=True)
+    show_in_nav = models.BooleanField(default=False)
 
     class Meta:
         pass
@@ -46,12 +48,26 @@ class Page(MP_Node):
         return url
 
     def save(self, *args, **kwargs):
+        skip_cache_clear = kwargs.pop('skip_cache_clear', False)
+
+        # Regenerate the URL.
         self.url = self.full_url()
+
+        if not skip_cache_clear:
+            # Clear this page's ancestor cache.
+            key = 'stoat:pages:%d:children' % (self.id)
+            cache.delete(key)
+
+        # Save the page.
         resp = super(Page, self).save(*args, **kwargs)
 
         # Resave children to update slugs.
         for p in self.get_descendants():
-            p.save()
+            p.save(skip_cache_clear=True)
+
+        if not skip_cache_clear:
+            # Clear the cache for the NEW set of ancestors.
+            self._clear_ancestor_caches()
 
         return resp
 
@@ -76,18 +92,25 @@ class Page(MP_Node):
 
 
     def nav_siblings(self):
-        return list(self.get_siblings())
+        return list(self.get_siblings().filter(show_in_nav=True))
 
     def nav_children(self):
-        return list(self.get_children())
+        return list(self.get_children().filter(show_in_nav=True))
 
     def nav_siblings_and_children(self):
         siblings = self.nav_siblings()
         results = []
         for sibling in siblings:
-            results.append([sibling, sibling.get_children()])
+            results.append([sibling, sibling.get_children().filter(show_in_nav=True)])
 
         return results
+
+
+    def _clear_ancestor_caches(self):
+        '''Clear the child ID caches for all of this page's ancestors.'''
+        for page in Page.objects.get(id=self.id).get_ancestors():
+            key = 'stoat:pages:%d:children' % (page.id)
+            cache.delete(key)
 
 
 class PageContent(models.Model):
@@ -129,6 +152,10 @@ class PageContent(models.Model):
 
 
 def clean_content(sender, instance, **kwargs):
+    if kwargs.get('raw'):
+        # We're in loaddata (or something similar).
+        return
+
     page = instance
     fields = dict(stemplates.get_fields_bare(page.template))
     current_contents = list(page.pagecontent_set.all())

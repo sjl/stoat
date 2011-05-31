@@ -40,6 +40,7 @@ def move_page(request):
         target = form.cleaned_data['target']
         position = form.cleaned_data['position']
 
+        page._clear_ancestor_caches()
         if position == 'above':
             page.move(target, 'left')
         elif position == 'below':
