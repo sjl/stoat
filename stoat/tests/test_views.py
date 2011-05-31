@@ -1,4 +1,5 @@
-from base_test import StoatTestCase
+from base_test import StoatTestCase, get
+from stoat.models import Page
 
 class ViewsTestCase(StoatTestCase):
     def test_slug(self):
@@ -22,6 +23,21 @@ class ViewsTestCase(StoatTestCase):
     def test_404(self):
         resp = self.client.get('/non-existant/')
         self.assertEqual(resp.status_code, 404)
+
+
+    def test_shadowed(self):
+        p = get(Page, title='Shadowed')
+        self.assertEqual(p.url, '/shadowed/')
+
+        resp = self.client.get('/shadowed/')
+        self.assertEqual(resp.status_code, 200)
+
+        self.assertTrue('This is a normal view.' in resp.content)
+        self.assertTrue('html' not in resp.content)
+
+        resp = self.client.get('/shadowed')
+        self.assertEqual(resp.status_code, 301)
+        self.assertEqual(resp['Location'], 'http://testserver/shadowed/')
 
 
     def test_trailing_slash_redirect(self):

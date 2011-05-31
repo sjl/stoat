@@ -112,6 +112,20 @@
         }
     }, 
     {
+        "pk": 9, 
+        "model": "stoat.page", 
+        "fields": {
+            "show_in_nav": false, 
+            "title": "Shadowed", 
+            "url": "/shadowed/", 
+            "numchild": 0, 
+            "depth": 1, 
+            "template": "Navigation", 
+            "path": "0010", 
+            "slug": "shadowed"
+        }
+    }, 
+    {
         "pk": 3, 
         "model": "stoat.pagecontent", 
         "fields": {

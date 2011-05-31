@@ -1,11 +1,15 @@
 from django.conf.urls.defaults import *
-from django.http import HttpResponseNotFound, HttpResponseServerError
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseServerError
 from django.contrib import admin
 
 admin.autodiscover()
 
+def shadowed(request):
+    return HttpResponse("This is a normal view.")
+
 urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
+    url(r'shadowed/$', shadowed)
 )
 
 def _404(request):
