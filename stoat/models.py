@@ -55,7 +55,7 @@ class Page(MP_Node):
         # Regenerate the URL.
         self.url = self.full_url()
 
-        if not skip_cache_clear:
+        if not skip_cache_clear and self.id:
             # Clear this page's ancestor cache.
             key = 'stoat:pages:%d:children' % (self.id)
             cache.delete(key)
