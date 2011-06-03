@@ -1,0 +1,19 @@
+* TODO Add more tests.
+** TODO Caching Tests
+** TODO More admin UI tests
+** TODO Form field tests
+
+* TODO Add more caching.
+  Also look around for places to use select_related.
+
+* TODO Add more fields/options.
+** TODO DateTimeField
+** TODO Choices option on appropriate fields.
+** TODO Label option on all fields.
+** TODO Help text option on all fields.
+
+* TODO Add publishing control.
+  Should be opt-in via an option in settings.py.
+
+  Results in two more fields per page: publish_start and publish_stop, along with
+  publish_date as a denormalized field.
