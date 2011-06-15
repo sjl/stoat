@@ -19,7 +19,7 @@ def get_template(tname=settings.STOAT_DEFAULT_TEMPLATE):
     return settings.STOAT_TEMPLATES[tname]
 
 def get_fields(tname=settings.STOAT_DEFAULT_TEMPLATE):
-    return [f if len(f) >= 3 else f + ({},)
+    return [f if len(f) >= 3 else list(f) + [{},]
             for f in get_template(tname)[1]]
 
 def get_fields_bare(tname=settings.STOAT_DEFAULT_TEMPLATE):
