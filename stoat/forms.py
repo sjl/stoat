@@ -128,7 +128,6 @@ class PageForm(forms.ModelForm):
 
     def save(self, *args, **kwargs):
         cd = self.cleaned_data
-
         pid = cd.pop('parent', '')
         parent = Page.objects.get(pk=pid) if pid else None
 
@@ -139,11 +138,13 @@ class PageForm(forms.ModelForm):
             else:
                 self.instance = Page.add_root(**cd)
         else:
+            previous_parent = self.instance.get_parent()
             self.instance.save()
-            if parent:
-                self.instance.move(parent, pos='first-child')
-            else:
-                self.instance.move(Page.get_first_root_node(), pos='first-sibling')
+            if parent != previous_parent:
+                if parent:
+                    self.instance.move(parent, pos='first-child')
+                else:
+                    self.instance.move(Page.get_first_root_node(), pos='first-sibling')
 
         self.instance = Page.objects.get(pk=self.instance.pk)
 

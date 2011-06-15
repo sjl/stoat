@@ -1,4 +1,4 @@
-# {{{
+# Imports {{{
 from django.conf import settings
 from django.contrib import admin
 from django.contrib.admin import helpers
@@ -24,6 +24,16 @@ from views import move_page
 csrf_protect_m = method_decorator(csrf_protect)
 # }}}
 
+# Settings {{{
+PAGE_FIELDS = ['title', 'slug', 'template',]
+if not getattr(settings, 'STOAT_HIDE_NAVIGATION', False):
+    PAGE_FIELDS.append('show_in_nav')
+
+PAGE_COLS = ['indented_title', 'url']
+if getattr(settings, 'STOAT_DEBUG', False):
+    PAGE_COLS.append('template')
+# }}}
+
 def check_empty_dict(GET_dict):
     empty = True
     for k, v in GET_dict.items():
@@ -39,13 +49,7 @@ class TreeChangeList(ChangeList):
             return super(TreeChangeList, self).get_ordering()
         return None, 'asc'
 
-PAGE_FIELDS = ['title', 'slug', 'template',]
-if not getattr(settings, 'STOAT_HIDE_NAVIGATION', False):
-    PAGE_FIELDS.append('show_in_nav')
 
-PAGE_COLS = ['indented_title', 'url']
-if getattr(settings, 'STOAT_DEBUG', False):
-    PAGE_COLS.append('template')
 
 class PageAdmin(admin.ModelAdmin):
     save_on_top = True
@@ -86,6 +90,7 @@ class PageAdmin(admin.ModelAdmin):
     def get_changelist(self, request):
         return TreeChangeList
 
+
     def add_view(self, request, form_url='', extra_context=None):
         extra_context = extra_context or {}
 
@@ -103,6 +108,7 @@ class PageAdmin(admin.ModelAdmin):
 
         return super(PageAdmin, self).add_view(request, form_url=form_url,
                                                extra_context=extra_context)
+
 
     def save_model(self, request, obj, form, change):
         obj.save()
