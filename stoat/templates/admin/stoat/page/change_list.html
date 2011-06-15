@@ -3,6 +3,7 @@
 {% block content %}
     {{ block.super }}
     <form action="{{ request.path }}move-page/" id="move-page" method="post">
+        {% csrf_token %}
         <input type="hidden" class="page" value="" name="page" />
         <input type="hidden" class="target" value="" name="target" />
         <input type="hidden" class="position" value="" name="position" />
