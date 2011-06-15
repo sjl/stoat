@@ -11,6 +11,12 @@ import stemplates
 
 ALLOWED_CHARS = 'abcdefghijklmnopqrstuvwxyz1234567890_'
 def clean_field_title(title):
+    """Return a "clean" version of the title, suitable for template/variable use.
+
+    Ex:
+        "Hello" -> "hello"
+        "Hello World!" -> "hello_world"
+    """
     return ''.join((c if c in ALLOWED_CHARS else '_') for c in title.lower())
 
 
@@ -40,6 +46,8 @@ class Page(MP_Node):
         return u'%s' % self.title
 
     def full_url(self):
+        """Return the full URL of this page, taking ancestors into account."""
+
         url = '/' + '/'.join(p.slug for p in list(self.get_ancestors()) + [self] if p.slug)
 
         # Make sure the URL ends with a slash, as god intended.
@@ -50,6 +58,14 @@ class Page(MP_Node):
         return url
 
     def save(self, *args, **kwargs):
+        """Save the page.
+
+        Does a few interesting things:
+
+        * Regenerates the stored URL.
+        * Saves children so their URLs will be regenerated as well.
+        * Clears the cache of this page's children.
+        """
         skip_cache_clear = kwargs.pop('skip_cache_clear', False)
 
         # Regenerate the URL.
@@ -75,6 +91,7 @@ class Page(MP_Node):
 
 
     def fields(self):
+        """Return a dict of this page's content (MEMOIZED)."""
         if not hasattr(self, '_fields'):
             self._fields = dict((clean_field_title(pc.title), pc.get_content())
                                 for pc in self.pagecontent_set.all())
@@ -82,6 +99,7 @@ class Page(MP_Node):
         return self._fields
 
     def f(self):
+        """A simple alias for fields()."""
         return self.fields()
 
 
@@ -90,16 +108,20 @@ class Page(MP_Node):
 
 
     def breadcrumbs(self):
+        """Return a list of this pages' ancestors and itself."""
         return list(self.get_ancestors()) + [self]
 
 
     def nav_siblings(self):
+        """Return a list of sibling Page objects (including this page)."""
         return list(self.get_siblings().filter(show_in_nav=True))
 
     def nav_children(self):
+        """Return a list of child Page objects."""
         return list(self.get_children().filter(show_in_nav=True))
 
     def nav_siblings_and_children(self):
+        """Return a nested list of sibling/children Page objects (including this page)."""
         siblings = self.nav_siblings()
         results = []
         for sibling in siblings:
@@ -109,7 +131,7 @@ class Page(MP_Node):
 
 
     def _clear_ancestor_caches(self):
-        '''Clear the child ID caches for all of this page's ancestors.'''
+        """Clear the child ID caches for all of this page's ancestors."""
         for page in Page.objects.get(id=self.id).get_ancestors():
             key = 'stoat:pages:%d:children' % (page.id)
             cache.delete(key)
@@ -135,6 +157,11 @@ class PageContent(models.Model):
 
 
     def get_content(self):
+        """Return the actual content.
+
+        If this is a ForeignKey, the model instance it points at will be returned.
+        Otherwise, the content itself is returned as a string.
+        """
         if self.typ == 'fk':
             if not self.content:
                 return None
@@ -154,6 +181,13 @@ class PageContent(models.Model):
 
 
 def clean_content(sender, instance, **kwargs):
+    """Clean the PageContent objects for a given Page.
+
+    New, needed PageContent objects will be created.
+    Existing, needed PageContent objects will not be touched.
+    Unneeded PageContent objects will be deleted.
+
+    """
     if kwargs.get('raw'):
         # We're in loaddata (or something similar).
         return
