@@ -27,7 +27,7 @@ CONTENT_TYPES = (
     ('img', 'img'),
     ('fk', 'fk'),
     ('int', 'int'),)
-TEMPLATES = [(name, name) for name in settings.STOAT_TEMPLATES.keys()]
+TEMPLATES = sorted([(name, name) for name in settings.STOAT_TEMPLATES.keys()])
 
 
 class Page(MP_Node):
