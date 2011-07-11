@@ -119,6 +119,14 @@ class Page(MP_Node):
     def nav_children(self):
         """Return a list of child Page objects."""
         return list(self.get_children().filter(show_in_nav=True))
+        
+    def nav_next_sibling(self):
+        """ Return the next sibling object, or None if it was the rightmost sibling."""
+        return self.get_next_sibling()
+        
+    def nav_prev_sibling(self):
+        """ Return the previous sibling object, or None if it was the leftmost sibling."""
+        return self.get_prev_sibling()
 
     def nav_siblings_and_children(self):
         """Return a nested list of sibling/children Page objects (including this page)."""
