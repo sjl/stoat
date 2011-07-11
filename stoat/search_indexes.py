@@ -6,9 +6,16 @@ from django.conf import settings
 
 from models import Page
 
-INDEX_CLASS = getattr(settings, 'STOAT_HAYSTACK_INDEX_CLASS', SearchIndex)
+INDEX_CLASS = getattr(settings, 'STOAT_HAYSTACK_INDEX_CLASS')
+if INDEX_CLASS:
+    module_name, index_name = INDEX_CLASS.rsplit('.', 1)
+    module = __import__(module_name, fromlist=[index_name])
 
-class PageIndex(INDEX_CLASS):
+    index = getattr(module, index_name)
+else:
+    index = SearchIndex
+
+class PageIndex(index):
     text = CharField(document=True, use_template=True)
     title = CharField(model_attr='title')
 
