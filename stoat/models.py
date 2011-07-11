@@ -122,11 +122,21 @@ class Page(MP_Node):
         
     def nav_next_sibling(self):
         """ Return the next sibling object, or None if it was the rightmost sibling."""
-        return self.get_next_sibling()
+        siblings = self.nav_siblings()
+        next_sibling = None
+        for i, sibling in enumerate(siblings):
+            if sibling == self and i < len(siblings) - 1:
+                next_sibling = siblings[i+1]
+        return next_sibling   
         
     def nav_prev_sibling(self):
         """ Return the previous sibling object, or None if it was the leftmost sibling."""
-        return self.get_prev_sibling()
+        siblings = self.nav_siblings()
+        prev_sibling = None
+        for i, sibling in enumerate(siblings):
+            if sibling == self and i > 0:
+                prev_sibling = siblings[i-1]
+        return prev_sibling 
 
     def nav_siblings_and_children(self):
         """Return a nested list of sibling/children Page objects (including this page)."""
