@@ -40,6 +40,27 @@ class NavigationTestCase(StoatTestCase):
         real_sibs = set(['/top-one/one-sub/'])
         test_sibs = set([p.url for p in page.nav_siblings()])
         self.assertTrue(real_sibs == test_sibs)
+        
+    def test_nav_next_sibling(self):
+        page = get(Page, url='/')
+        real_sibs = set(['/', '/top-one/', '/top-two/'])
+        real_next_sib = '/top-one/'
+        self.assertTrue(real_next_sib == page.nav_next_sibling().url)
+        
+        page = get(Page, url='/top-two/')
+        real_next_sib = None
+        self.assertTrue(real_next_sib == page.nav_next_sibling())
+        
+    def test_nav_prev_sibling(self):
+        page = get(Page, url='/')
+        real_sibs = set(['/', '/top-one/', '/top-two/'])
+        real_prev_sib = None
+        self.assertTrue(real_prev_sib == page.nav_prev_sibling())
+        
+        page = get(Page, url='/top-two/')
+        real_sibs = set(['/', '/top-one/', '/top-two/'])
+        real_prev_sib = '/top-one/'
+        self.assertTrue(real_prev_sib == page.nav_prev_sibling().url)
 
     def test_nav_children(self):
         page = get(Page, url='/')
@@ -56,6 +77,7 @@ class NavigationTestCase(StoatTestCase):
         real_kids = set(['/top-one/one-sub/one-sub-sub/'])
         test_kids = set([p.url for p in page.nav_children()])
         self.assertTrue(real_kids == test_kids)
+        
     def test_nav_siblings_and_children(self):
         def test_siblings(saclist, urllist):
             urls = set([sib.url for sib, children in saclist])
