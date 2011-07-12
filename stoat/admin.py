@@ -286,9 +286,9 @@ class PageAdmin(admin.ModelAdmin):
 
     class Media:
         css = {
-            'all': ('stoat.css',),
+            'all': ('stoat.css',) + getattr(settings, 'STOAT_ADMIN_EXTRA_CSS', ()),
         }
-        js = ('stoat.js',)
+        js = ('stoat.js',) + getattr(settings, 'STOAT_ADMIN_EXTRA_JS', ())
 admin.site.register(Page, PageAdmin)
 
 
