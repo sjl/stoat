@@ -22,6 +22,7 @@ def clean_field_title(title):
 
 CONTENT_TYPES = (
     ('char', 'char'),
+    ('bool', 'bool'),
     ('text', 'text'),
     ('ckeditor', 'ckeditor'),
     ('img', 'img'),
@@ -194,6 +195,8 @@ class PageContent(models.Model):
                 return model.objects.get(id=self.content)
             except model.DoesNotExist:
                 return None
+        elif self.typ == 'bool':
+            return True if int(self.content) else False
         else:
             return self.content
 

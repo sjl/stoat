@@ -114,13 +114,41 @@ class PageAdmin(admin.ModelAdmin):
         obj.save()
 
         if not form.ignore_content:
-            content_data = [(k.split('_', 1)[1], v)
-                            for k, v in form.data.items()
-                            if k.startswith('content_')]
+            # Use the authoritative list of fields, because browsers won't send along
+            # boolean fields that are unchecked (False) at all.
 
-            for title, content in content_data:
-                pc = PageContent.objects.get(page=obj, cleaned_title=title)
-                pc.content = content
+            # This is ugly, but we have to do it.
+            #
+            # fields: list of (clean_field_title, field_type) pairs
+            # fieldnames: list of clean_field_title
+            # fieldtypes: dict of clean_field_title -> field_type pairs
+
+            fields = [(clean_field_title(f[0]), f[1])
+                      for f in stemplates.get_fields_bare(obj.template)]
+            fieldnames = [f[0] for f in fields]
+            fieldtypes = dict(fields)
+
+            # content is going to be a dict of
+            # clean_field_title -> cleaned data pairs
+
+            # Default to 0, because browsers won't even send along a field for
+            # a checkbox element that's unchecked.
+            content = dict([(f, 0) for f in fieldnames])
+
+            # Now update content with the appropriate data from the form.
+            for k, v in form.data.items():
+                if k.startswith('content_'):
+                    fieldname = k.split('_', 1)[1]
+                    fieldtype = fieldtypes[fieldname]
+
+                    if fieldtype == 'bool':
+                        v = 1
+
+                    content[fieldname] = v
+
+            for k, v in content.items():
+                pc = PageContent.objects.get(page=obj, cleaned_title=k)
+                pc.content = v
                 pc.save()
 
 
@@ -233,7 +261,13 @@ class PageAdmin(admin.ModelAdmin):
         else:
             initial = {}
             for pc in page.pagecontent_set.all():
-                initial['content_' + clean_field_title(pc.title)] = pc.content
+                # Ugly hack to store booleans as text.
+                if pc.typ == 'bool':
+                    val = True if int(pc.content) else False
+                else:
+                    val = pc.content
+
+                initial['content_' + clean_field_title(pc.title)] = val
 
             content_form = stoat_forms.get_content_form(page.template, initial=initial)
 
